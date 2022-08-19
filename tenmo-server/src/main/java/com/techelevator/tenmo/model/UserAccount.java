@@ -24,6 +24,10 @@ public class UserAccount {
         this.balance = balance.setScale(2, RoundingMode.FLOOR);
     }
 
+    public UserAccount() {
+
+    }
+
     public int getUser() {
         return userId;
     }
