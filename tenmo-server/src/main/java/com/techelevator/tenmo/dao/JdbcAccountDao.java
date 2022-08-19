@@ -44,7 +44,7 @@ public class JdbcAccountDao implements AccountDao {
                 "WHERE user_id = ?; " +
                 "COMMIT;";
 
-        jdbcTemplate.update(sql, toUser.add(amount), to, fromUser.subtract(amount), from);
+        jdbcTemplate.update(sqlUpdate, toUser.add(amount), to, fromUser.subtract(amount), from);
         return fromUser;
     }
     private UserAccount mapRowToUser(SqlRowSet rs) {
