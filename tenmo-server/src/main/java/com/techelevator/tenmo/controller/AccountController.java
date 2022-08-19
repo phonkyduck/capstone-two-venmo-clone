@@ -18,6 +18,6 @@ public class AccountController {
         this.user = user;
     }
     public BigDecimal getBalance(@RequestBody User user ){
-        JdbcAccountDao.getAccount(user.getId());
+//        JdbcAccountDao.getAccount(user.getId());
     }
 }
