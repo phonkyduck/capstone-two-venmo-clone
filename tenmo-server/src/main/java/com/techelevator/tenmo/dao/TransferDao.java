@@ -1,15 +1,16 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 
 import java.util.List;
 
 public interface TransferDao {
-    List<Transfer> findAll(int currentUserId);
-    List<Transfer> findTransferToUser(int id, int currentUserId);
-    List<Transfer> findTransferToUser(String username , int currentUserId);
-    List<Transfer> findTransferFromUser(int id, int currentUserId);
-    List<Transfer> findTransferFromUser(String username,int currentUserId);
-    Transfer findById(int transferId, int currentId);
+    List<Transfer> findAll(User currentUser);
+    List<Transfer> findTransferToUser(int id, User currentUserId);
+    List<Transfer> findTransferToUser(String username , User currentUser);
+    List<Transfer> findTransferFromUser(int id, User currentUserId);
+    List<Transfer> findTransferFromUser(String username, User currentUser);
+    Transfer findById(int transferId, User currentUser);
 
 }
