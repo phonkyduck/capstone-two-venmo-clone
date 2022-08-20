@@ -102,6 +102,105 @@ public class JdbcTransferDao implements TransferDao{
         }
         return list;
     }
+    public List<Transfer> findTransfer(String username, User currentUser){
+        SqlRowSet results;
+        if(username != currentUser.getUsername()) {
+            String sql = sqlStatement + "WHERE uf.username = ? AND at.user_id = ? OR " +
+                    "ut.username = ? AND af.user_id = ?";
+            results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId(), currentUser.getId(), username);
+        } else {
+            String sql = sqlStatement + "WHERE uf.username = ? or ut.username = ?";
+            results = jdbcTemplate.queryForRowSet(sql, username);
+        }
+        List<Transfer> list = new ArrayList<>();
+        while(results.next()){
+            list.add(mapRowToTransfer(results));
+        }
+        return list;
+    }
+
+    @Override
+    public List<Transfer> findTransfer(int id, User currentUser) {
+        SqlRowSet results;
+        if(id != currentUser.getId()) {
+            String sql = sqlStatement + "WHERE af.user_id = ? AND at.user_id = ? OR af.user_id = ? AND at.user_id = ?";
+            results = jdbcTemplate.queryForRowSet(sql, id, currentUser.getId(), currentUser.getId(), id);
+        } else {
+            String sql = sqlStatement + "WHERE af.user_id = ? OR at.user_id = ?";
+            results = jdbcTemplate.queryForRowSet(sql, id, id);
+        }
+        List<Transfer> list = new ArrayList<>();
+        while(results.next()){
+            list.add(mapRowToTransfer(results));
+        }
+        return list;
+    }
+
+    @Override
+    public List<Transfer> findTransfer(String username, User currentUser, boolean isFrom) {
+        SqlRowSet results;
+        if(isFrom){
+            if(username != currentUser.getUsername()) {
+                String sql = sqlStatement + "WHERE uf.username = ? AND at.user_id = ?";
+                results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId());
+            } else {
+                String sql = sqlStatement + "WHERE uf.username = ?";
+                results = jdbcTemplate.queryForRowSet(sql, username);
+            }
+            List<Transfer> list = new ArrayList<>();
+            while(results.next()){
+                list.add(mapRowToTransfer(results));
+            }
+            return list;
+        }
+        else{
+            if(username != currentUser.getUsername()) {
+                String sql = sqlStatement + "WHERE ut.username = ? AND af.user_id = ?";
+                results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId());
+            } else {
+                String sql = sqlStatement + "WHERE ut.username = ?";
+                results = jdbcTemplate.queryForRowSet(sql, username);
+            }
+            List<Transfer> list = new ArrayList<>();
+            while(results.next()){
+                list.add(mapRowToTransfer(results));
+            }
+            return list;
+        }
+    }
+
+    @Override
+    public List<Transfer> findTransfer(int id, User currentUser, boolean isFrom) {
+        SqlRowSet results;
+        if(isFrom){
+            if(id != currentUser.getId()) {
+                String sql = sqlStatement + "WHERE af.user_id = ? AND at.user_id = ?";
+                results = jdbcTemplate.queryForRowSet(sql, id, currentUser.getId());
+            } else {
+                String sql = sqlStatement + "WHERE af.user_id = ?";
+                results = jdbcTemplate.queryForRowSet(sql, id);
+            }
+            List<Transfer> list = new ArrayList<>();
+            while(results.next()){
+                list.add(mapRowToTransfer(results));
+            }
+            return list;
+        }
+        else {
+            if(id != currentUser.getId()) {
+                String sql = sqlStatement + "WHERE at.user_id = ? AND af.user_id = ?";
+                results = jdbcTemplate.queryForRowSet(sql, id, currentUser.getId());
+            } else {
+                String sql = sqlStatement + "WHERE at.user_id = ?";
+                results = jdbcTemplate.queryForRowSet(sql, id);
+            }
+            List<Transfer> list = new ArrayList<>();
+            while(results.next()){
+                list.add(mapRowToTransfer(results));
+            }
+            return list;
+        }
+    }
 
     @Override
     public Transfer findById(int transferId, User currentUser) {
@@ -110,6 +209,7 @@ public class JdbcTransferDao implements TransferDao{
         Transfer transfer = mapRowToTransfer(results);
         return transfer;
     }
+
 
     private Transfer mapRowToTransfer(SqlRowSet rs) {
         Transfer transfer = new Transfer();;

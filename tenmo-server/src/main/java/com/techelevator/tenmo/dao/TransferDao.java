@@ -12,5 +12,11 @@ public interface TransferDao {
     List<Transfer> findTransferFromUser(int id, User currentUserId);
     List<Transfer> findTransferFromUser(String username, User currentUser);
     Transfer findById(int transferId, User currentUser);
+    List<Transfer> findTransfer(String username, User currentUser);
+    List<Transfer> findTransfer(int id, User currentUser);
+    List<Transfer> findTransfer(String username, User currentUser, boolean isFrom);
+    List<Transfer> findTransfer(int id, User currentUser, boolean isFrom);
+
+
 
 }

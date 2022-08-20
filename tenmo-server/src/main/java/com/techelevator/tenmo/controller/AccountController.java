@@ -2,21 +2,23 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.JdbcAccountDao;
+import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 
 @RestController
 @RequestMapping(path = "user/account/")
 public class AccountController {
-
+private JdbcUserDao userDao;
     private JdbcAccountDao accountDao;
 
     @GetMapping
-    public BigDecimal getBalance(@RequestBody int id ){
-        Account account = accountDao.getAccount(id);
+    public BigDecimal getBalance(Principal user ){
+        Account account = accountDao.getAccount(userDao.findIdByUsername( user.getName()));
         return account.getBalance();
     }
 
@@ -27,8 +29,8 @@ public class AccountController {
     }
 
     @PutMapping(path = "/add")
-    public BigDecimal addToAccount(@RequestBody BigDecimal amount, @RequestParam int id){
-        accountDao.addTE(amount, id);
+    public BigDecimal addToAccount(@RequestBody BigDecimal amount, Principal user){
+        accountDao.addTE(amount, userDao.findIdByUsername( user.getName()));
         return amount;
     }
 
