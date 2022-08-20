@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class UserAccount {
+public class Account {
 
     @NotBlank
     private int accountId;
@@ -14,17 +14,17 @@ public class UserAccount {
     @NotEmpty
     private BigDecimal balance = new BigDecimal(1000).setScale(2,RoundingMode.FLOOR);
 
-    public UserAccount(int userId){
+    public Account(int userId){
         this.userId = userId;
     }
 
-    public UserAccount(int accountId, int userId, BigDecimal balance) {
+    public Account(int accountId, int userId, BigDecimal balance) {
         this.accountId = accountId;
         this.userId = userId;
         this.balance = balance.setScale(2, RoundingMode.FLOOR);
     }
 
-    public UserAccount() {
+    public Account() {
 
     }
 

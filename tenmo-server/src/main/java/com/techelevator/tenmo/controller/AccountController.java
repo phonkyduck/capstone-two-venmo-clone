@@ -1,8 +1,6 @@
 package com.techelevator.tenmo.controller;
 
-import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserAccount;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +15,7 @@ public class AccountController {
     public AccountController(User user) {
         this.user = user;
     }
-    public BigDecimal getBalance(@RequestBody User user ){
-//        JdbcAccountDao.getAccount(user.getId());
-    }
+//    public BigDecimal getBalance(@RequestBody User user ){
+////        JdbcAccountDao.getAccount(user.getId());
+//    }
 }
