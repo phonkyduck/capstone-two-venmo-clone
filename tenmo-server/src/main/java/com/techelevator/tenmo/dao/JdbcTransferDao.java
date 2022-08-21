@@ -210,6 +210,15 @@ public class JdbcTransferDao implements TransferDao{
         return transfer;
     }
 
+    @Override
+    public List<Transfer> findAllAdmin() {
+        List<Transfer> list = new ArrayList<>();
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sqlStatement);
+        while (results.next()){
+            list.add(mapRowToTransfer(results));
+        }
+        return list;
+    }
 
     private Transfer mapRowToTransfer(SqlRowSet rs) {
         Transfer transfer = new Transfer();;

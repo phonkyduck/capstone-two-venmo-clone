@@ -16,6 +16,7 @@ public interface TransferDao {
     List<Transfer> findTransfer(int id, User currentUser);
     List<Transfer> findTransfer(String username, User currentUser, int isFrom);
     List<Transfer> findTransfer(int id, User currentUser, int isFrom);
+    List<Transfer> findAllAdmin();
 
 
 

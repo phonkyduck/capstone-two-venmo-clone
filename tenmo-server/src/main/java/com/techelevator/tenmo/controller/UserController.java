@@ -2,11 +2,12 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.model.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {

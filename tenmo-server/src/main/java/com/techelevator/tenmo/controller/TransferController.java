@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcTransferDao;
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.model.Transfer;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
-
+@PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping(path = "/user/transfer")
 public class TransferController {
@@ -20,7 +21,7 @@ public class TransferController {
     private JdbcAccountDao accountDao;
 
     @GetMapping
-    private List<Transfer> getAll(Principal user){
+    private List<Transfer> getAllFromUser(Principal user){
         return transferDao.findAll(userDao.findByUsername(user.getName()));
     }
 
@@ -42,5 +43,11 @@ public class TransferController {
     @GetMapping
     private Transfer getById(int transferId, Principal user){
         return transferDao.findById(transferId, userDao.findByUsername(user.getName()));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    private List<Transfer> getAllAdmin(){
+        return transferDao.findAllAdmin();
     }
 }
