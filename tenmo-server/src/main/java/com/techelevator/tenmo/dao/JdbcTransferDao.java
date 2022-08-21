@@ -18,7 +18,7 @@ public class JdbcTransferDao implements TransferDao{
             "JOIN tenmo_user uf on uf.user_id = af.user_id " +
             "JOIN tenmo_user ut on ut.user_id = at.user_id ";
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -221,7 +221,7 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     private Transfer mapRowToTransfer(SqlRowSet rs) {
-        Transfer transfer = new Transfer();;
+        Transfer transfer = new Transfer();
         transfer.setId(rs.getInt("t.transfer_id"));
         transfer.setToUser(rs.getString("ut.username"));
         transfer.setFromUser(rs.getString("uf.username"));

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 public class JdbcAccountDao implements AccountDao {
 
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -48,7 +48,7 @@ public class JdbcAccountDao implements AccountDao {
         return fromUser;
     }
     private Account mapRowToUser(SqlRowSet rs) {
-        Account user = new Account();;
+        Account user = new Account();
         user.setAccountId(rs.getInt("account_id"));
         user.setUser(rs.getInt("user_id"));
         user.setBalance(rs.getBigDecimal("balance"));
