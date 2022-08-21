@@ -23,17 +23,23 @@ public class AccountService {
         return accountBalance;
     }
 
-    public boolean sendTE(User fromUser, User toUser, BigDecimal amount){
-        boolean successful = false;
+    public String sendTE(User fromUser, User toUser, BigDecimal amount){
+        String error = "";
         try {
-            restTemplate.put(API_BASE_URL + "/" + toUser.getId() + "-" + fromUser.getId(), makeEntity(amount));
-            successful = true;
+            if(fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
+                restTemplate.put(API_BASE_URL + "/" + toUser.getId() + "-" + fromUser.getId(), makeEntity(amount));
+                error = "success";
+            } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
+                error = "amount";
+            } else if (fromUser == toUser && accountBalance.compareTo(amount) >= 0){
+                error = "self";
+            } else { error = "unknown";}
         } catch(RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        return successful;
+        return error;
     }
 
     private HttpEntity<BigDecimal> makeEntity(BigDecimal amount) {
@@ -42,4 +48,23 @@ public class AccountService {
         return new HttpEntity<>(amount, headers);
     }
 
+    public void printCurrentBalance(){
+        System.out.println(getBalance());
+    }
+
+    public void printUserList(){
+        System.out.println();
+    }
+
+    public void printSendCheck(String error){
+        if(error.equals("success")){
+            System.out.println("Send was successful");
+        } else if(error.equals("amount")){
+            System.out.println("Cannot Complete Transaction: Insufficient Funds");
+        } else if(error.equals("self")){
+            System.out.println("Cannot Complete Transaction: Cannot Send TEbucks to Self");
+        } else {
+            System.out.println("An unknown error has occurred");
+        }
+    }
 }

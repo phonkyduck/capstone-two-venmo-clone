@@ -24,10 +24,10 @@ public class TransferService {
         return new HttpEntity<>(id, headers);
     }
 
-    public List<Transfer> getAllTransfers() {
-        List<Transfer> myTransfers = new ArrayList<>();
+    public Transfer[] getAllTransfers() {
+        Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "/getAll", List.class);
+            myTransfers = restTemplate.getForObject(API_BASE_URL + "/getAll", Transfer[].class);
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -48,10 +48,10 @@ public class TransferService {
         return myTransfer;
     }
 
-    public List<Transfer> getTransfer(String username) {
-        List<Transfer> myTransfers = new ArrayList<>();
+    public Transfer[] getTransfer(String username) {
+        Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "?username_like=" + username, List.class);
+            myTransfers = restTemplate.getForObject(API_BASE_URL + "?username_like=" + username, Transfer[].class);
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -60,10 +60,10 @@ public class TransferService {
         return myTransfers;
     }
 
-    public List<Transfer> getTransfer(int id) {
-        List<Transfer> myTransfers = new ArrayList<>();
+    public Transfer[] getTransfer(int id) {
+        Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "?user_id=" + id, List.class);
+            myTransfers = restTemplate.getForObject(API_BASE_URL + "?user_id=" + id, Transfer[].class);
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -72,10 +72,10 @@ public class TransferService {
         return myTransfers;
     }
 
-    public List<Transfer> getTransfer(String username, int isFrom) {
-        List<Transfer> myTransfers = new ArrayList<>();
+    public Transfer[] getTransfer(String username, int isFrom) {
+        Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "?username_like=" + username + "?filter=" + isFrom, List.class);
+            myTransfers = restTemplate.getForObject(API_BASE_URL + "?username_like=" + username + "?filter=" + isFrom, Transfer[].class);
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -84,10 +84,10 @@ public class TransferService {
         return myTransfers;
     }
 
-    public List<Transfer> getTransfer(int id, int isFrom) {
-        List<Transfer> myTransfers = new ArrayList<>();
+    public Transfer[] getTransfer(int id, int isFrom) {
+        Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "?user_id=" + id + "?filter=" + isFrom, List.class);
+            myTransfers = restTemplate.getForObject(API_BASE_URL + "?user_id=" + id + "?filter=" + isFrom, Transfer[].class);
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
