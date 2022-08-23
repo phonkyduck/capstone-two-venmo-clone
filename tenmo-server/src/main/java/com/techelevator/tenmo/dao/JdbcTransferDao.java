@@ -6,11 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 @Component
 public class JdbcTransferDao implements TransferDao{
+
+//    @Autowired
+    private final JdbcTemplate jdbcTemplate;
+
+    public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private final String sqlStatement = "SELECT t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username, ut.username, t.amount, at.user_id, af.user_id" +
             "FROM Transfer t " +
@@ -21,8 +29,6 @@ public class JdbcTransferDao implements TransferDao{
             "JOIN tenmo_user uf on uf.user_id = af.user_id " +
             "JOIN tenmo_user ut on ut.user_id = at.user_id ";
 
-    @Autowired
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
 
     @Override

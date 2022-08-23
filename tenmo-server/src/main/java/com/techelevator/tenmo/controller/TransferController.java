@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-@PreAuthorize("isAuthenticated()")
 @RestController
+@PreAuthorize("isAuthenticated()")
 @RequestMapping(path = "/user/transfer")
 public class TransferController {
 
@@ -20,6 +20,12 @@ public class TransferController {
     private JdbcUserDao userDao;
     @Autowired
     private JdbcAccountDao accountDao;
+
+//    public TransferController(JdbcTransferDao transferDao, JdbcUserDao userDao, JdbcAccountDao accountDao) {
+//        this.transferDao = transferDao;
+//        this.userDao = userDao;
+//        this.accountDao = accountDao;
+//    }
 
     @GetMapping(path = "/getAll")
     private List<Transfer> getAllFromUser(Principal user){
