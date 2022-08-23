@@ -1,10 +1,10 @@
 package com.techelevator.tenmo.controller;
 
-import com.techelevator.tenmo.dao.JdbcAccountDao;
-import com.techelevator.tenmo.dao.JdbcTransferDao;
-import com.techelevator.tenmo.dao.JdbcUserDao;
+import com.techelevator.tenmo.dao.*;
 import com.techelevator.tenmo.model.Transfer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -13,13 +13,17 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/user/transfer")
 public class TransferController {
+
+    @Autowired
     private JdbcTransferDao transferDao;
+    @Autowired
     private JdbcUserDao userDao;
+    @Autowired
     private JdbcAccountDao accountDao;
 
     @GetMapping(path = "/getAll")
     private List<Transfer> getAllFromUser(Principal user){
-        return transferDao.findAll(userDao.findByUsername(user.getName()));
+        return transferDao.findAll(/*userDao.findByUsername(user.getName())*/);
     }
 
     @GetMapping

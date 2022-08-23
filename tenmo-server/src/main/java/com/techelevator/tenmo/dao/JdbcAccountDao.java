@@ -2,18 +2,19 @@ package com.techelevator.tenmo.dao;
 
 
 import com.techelevator.tenmo.model.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-
+@Component
 public class JdbcAccountDao implements AccountDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-    public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+
     @Override
     public Account getAccount(int id) {
         String sql = "SELECT * FROM accounts WHERE user_id = ?;";

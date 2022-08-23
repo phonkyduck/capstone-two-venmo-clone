@@ -2,13 +2,16 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class JdbcTransferDao implements TransferDao{
+
     private final String sqlStatement = "SELECT t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username, ut.username, t.amount, at.user_id, af.user_id" +
             "FROM Transfer t " +
             "JOIN transfer_status ts on ts.transfer_status_id = t.transfer_status_id " +
@@ -18,17 +21,16 @@ public class JdbcTransferDao implements TransferDao{
             "JOIN tenmo_user uf on uf.user_id = af.user_id " +
             "JOIN tenmo_user ut on ut.user_id = at.user_id ";
 
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-    public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+
     @Override
-    public List<Transfer> findAll(User currentUser) {
-        String sql = sqlStatement + "WHERE t.account_from = ? OR t.account_to = ?;";
+    public List<Transfer> findAll(/*User currentUser*/) {
+        String sql = sqlStatement /*+ "WHERE t.account_from = ? OR t.account_to = ?;"*/;
 
         List<Transfer> list = new ArrayList<>();
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,currentUser.getId(), currentUser.getId());
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql/*, currentUser.getId(), currentUser.getId()*/);
         while (results.next()){
             list.add(mapRowToTransfer(results));
         }
