@@ -1,11 +1,11 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
-import com.techelevator.tenmo.services.AccountService;
-import com.techelevator.tenmo.services.AuthenticationService;
-import com.techelevator.tenmo.services.ConsoleService;
-import com.techelevator.tenmo.services.TransferService;
+import com.techelevator.tenmo.services.*;
+
+import java.math.BigDecimal;
 
 public class App {
 
@@ -15,6 +15,9 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private final AccountService accountService = new AccountService();
     private final TransferService transferService = new TransferService();
+    private final UserService userService = new UserService();
+    private final SelectionService selectionService = new SelectionService();
+    private final User user = new User();
 
     private AuthenticatedUser currentUser;
 
@@ -107,6 +110,15 @@ public class App {
 		// TODO Auto-generated method stub
 //        boolean check = sendTE(user1,user2,150.25)
 //        printSendCheck(check);
+        System.out.println("Please select a user to send money to:");
+        selectionService.printArray(userService.getUsers());
+        User recipient;
+        String toUser = consoleService.promptForString("Please enter the recipient's username: ");
+        recipient = userService.findUserByString(toUser);
+        BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to send: ");
+        String error = accountService.sendTE(currentUser.getUser(), recipient, amount);
+        accountService.printSendCheck(error);
+
 	}
 
 	private void requestBucks() {
