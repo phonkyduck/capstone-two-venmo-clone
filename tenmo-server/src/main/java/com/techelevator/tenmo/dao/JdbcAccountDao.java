@@ -17,6 +17,9 @@ public class JdbcAccountDao implements AccountDao {
     @Autowired
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
+    @Autowired
+    private JdbcTransferDao transferDao;
+
 
     @Override
     public Account getAccount(int id) {
@@ -47,6 +50,10 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public BigDecimal transferTE(BigDecimal amount, int to, int from) {
+        int accountToId = getAccount(to).getAccountId();
+        int accountFromId = getAccount(from).getAccountId();
+        transferDao.addTransfer(amount,accountToId,accountFromId,2,2);
+
         String sql = "SELECT balance FROM account WHERE user_id = ?;";
         BigDecimal toUser = jdbcTemplate.queryForObject(sql, BigDecimal.class,  to);
         BigDecimal fromUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, from);
@@ -56,6 +63,7 @@ public class JdbcAccountDao implements AccountDao {
                 "UPDATE account SET balance = ? " +
                 "WHERE user_id = ?; " +
                 "COMMIT;";
+
 
         jdbcTemplate.update(sqlUpdate, toUser.add(amount), to, fromUser.subtract(amount), from);
         return fromUser;

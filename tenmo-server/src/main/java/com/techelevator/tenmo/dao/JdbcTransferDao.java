@@ -8,17 +8,19 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 public class JdbcTransferDao implements TransferDao{
 
-//    @Autowired
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+//    public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
+//        this.jdbcTemplate = jdbcTemplate;
+//    }
 
     private final String sqlStatement = "SELECT t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username, ut.username, t.amount, at.user_id, af.user_id" +
             "FROM Transfer t " +
@@ -226,6 +228,12 @@ public class JdbcTransferDao implements TransferDao{
             list.add(mapRowToTransfer(results));
         }
         return list;
+    }
+
+    public void addTransfer(BigDecimal amount, int to, int from, int status, int type) {
+        String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
+                "VALUES (?,?,?,?,?);";
+        jdbcTemplate.update(sql,type,status,from,to,amount);
     }
 
     private Transfer mapRowToTransfer(SqlRowSet rs) {

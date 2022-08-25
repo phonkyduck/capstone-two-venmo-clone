@@ -3,6 +3,7 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TransferDao {
@@ -17,6 +18,7 @@ public interface TransferDao {
     List<Transfer> findTransfer(String username, User currentUser, int isFrom);
     List<Transfer> findTransfer(int id, User currentUser, int isFrom);
     List<Transfer> findAllAdmin();
+    void addTransfer(BigDecimal amount, int to, int from, int status, int type);
 
 
 
