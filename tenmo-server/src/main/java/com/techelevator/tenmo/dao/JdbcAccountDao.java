@@ -8,6 +8,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JdbcAccountDao implements AccountDao {
@@ -18,10 +20,19 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public Account getAccount(int id) {
-        String sql = "SELECT * FROM accounts WHERE user_id = ?;";
+        String sql = "SELECT * FROM account WHERE user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
-        Account user = mapRowToUser(results);
-        return user;
+        List<Account> user = new ArrayList<>();
+        while (results.next()) {
+            user.add(mapRowToUser(results));
+        }
+        for (Account account:user
+        ) {
+            if (account.getUser() == id){
+                return account;
+            }
+        }
+        return null;
     }
 
     @Override

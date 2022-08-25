@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.security.Principal;
 @PreAuthorize("isAuthenticated()")
 @RestController
-@RequestMapping(path = "user/account/")
+@RequestMapping(path = "/user/account/")
 public class AccountController {
 
     @Autowired
@@ -23,12 +23,13 @@ public class AccountController {
 
     @GetMapping
     public BigDecimal getBalance(Principal user ){
-        Account account = accountDao.getAccount(userDao.findIdByUsername( user.getName()));
+        Account account = accountDao.getAccount(userDao.findIdByUsername(user.getName()));
         return account.getBalance();
+//        return userDao.findIdByUsername(user.getName());
     }
 
-    @PutMapping(path = "/{to}-{from}")
-    public BigDecimal transfer(@RequestBody BigDecimal amount, @RequestParam int to, @RequestParam int from){
+    @PutMapping(path = "/{to}/{from}/{amount}")
+    public BigDecimal transfer( @PathVariable BigDecimal amount, @PathVariable int to, @PathVariable int from){
         accountDao.transferTE(amount, to, from);
         return amount;
     }
