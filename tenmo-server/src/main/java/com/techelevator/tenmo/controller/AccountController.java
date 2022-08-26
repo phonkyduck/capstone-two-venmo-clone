@@ -1,10 +1,8 @@
 package com.techelevator.tenmo.controller;
 
-import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +28,7 @@ public class AccountController {
 
     @PutMapping(path = "/{to}/{from}/{amount}")
     public BigDecimal transfer( @PathVariable BigDecimal amount, @PathVariable int to, @PathVariable int from){
-        accountDao.transferTE(amount, to, from);
+        accountDao.sendTE(amount, to, from);
         return amount;
     }
 

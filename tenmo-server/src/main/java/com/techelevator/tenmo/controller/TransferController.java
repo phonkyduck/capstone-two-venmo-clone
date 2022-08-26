@@ -53,6 +53,12 @@ public class TransferController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(path = "/admin/{id}")
+    private Transfer getById(@PathVariable int transferId){
+        return transferDao.findById(transferId);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/adminAll")
     private List<Transfer> getAllAdmin(){
         return transferDao.findAllAdmin();

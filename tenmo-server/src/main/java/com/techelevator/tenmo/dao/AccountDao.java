@@ -9,7 +9,7 @@ public interface AccountDao {
     Account getAccount(int id);
 
     BigDecimal addTE(BigDecimal amount, int id);
-    BigDecimal transferTE(BigDecimal amount, int to, int from);
+    BigDecimal sendTE(BigDecimal amount, int to, int from);
     //BigDecimal requestTE();
 
 }

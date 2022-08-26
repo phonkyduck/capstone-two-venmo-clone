@@ -46,6 +46,25 @@ public class ConsoleService {
         System.out.println();
     }
 
+    public void printTransferMenu() {
+        System.out.println();
+        System.out.println("1: View all transfers");
+        System.out.println("2: Search transfer by User ID");
+        System.out.println("3: Search transfer by username");
+        System.out.println("4: Search transfer by Transfer ID");
+        System.out.println("5: Display all users");
+        System.out.println("0. Exit");
+        System.out.println();
+    }
+
+    public void printTransferFilterMenu() {
+        System.out.println();
+        System.out.println("1: Filter search by recipient");
+        System.out.println("2: Filter search by sender");
+        System.out.println("0: Exit");
+        System.out.println();
+    }
+
     public UserCredentials promptForCredentials() {
         String username = promptForString("Username: ");
         String password = promptForString("Password: ");

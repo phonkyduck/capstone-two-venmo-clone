@@ -48,6 +48,18 @@ public class TransferService {
         return myTransfer;
     }
 
+    public Transfer getTransferByIdAdmin(int id) {
+        Transfer myTransfer = new Transfer();
+        try {
+            myTransfer = restTemplate.getForObject(API_BASE_URL + "/admin/" + id, Transfer.class);
+        } catch (RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return myTransfer;
+    }
+
     public Transfer[] getTransfer(String username) {
         Transfer[] myTransfers = new Transfer[]{};
         try {

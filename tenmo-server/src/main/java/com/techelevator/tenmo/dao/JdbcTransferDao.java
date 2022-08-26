@@ -221,6 +221,14 @@ public class JdbcTransferDao implements TransferDao{
     }
 
     @Override
+    public Transfer findById(int transferId) {
+        String sql = sqlStatement + "WHERE t.transfer_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
+        Transfer transfer = mapRowToTransfer(results);
+        return transfer;
+    }
+
+    @Override
     public List<Transfer> findAllAdmin() {
         List<Transfer> list = new ArrayList<>();
         SqlRowSet results = jdbcTemplate.queryForRowSet(sqlStatement);

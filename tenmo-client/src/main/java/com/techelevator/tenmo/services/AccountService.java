@@ -26,7 +26,9 @@ public class AccountService {
     public String sendTE(User fromUser, User toUser, BigDecimal amount){
         String error = "";
         try {
-            if(fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
+            if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
+                error = "zero";
+            } else if (fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
                 restTemplate.put(API_BASE_URL + "/" + toUser.getId() + "-" + fromUser.getId(), makeEntity(amount));
                 error = "success";
             } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
@@ -57,7 +59,9 @@ public class AccountService {
     }
 
     public void printSendCheck(String error){
-        if(error.equals("success")){
+        if(error.equals("zero")) {
+            System.out.println("Cannot send zero or negative amount");
+        } else if(error.equals("success")){
             System.out.println("Send was successful");
         } else if(error.equals("amount")){
             System.out.println("Cannot Complete Transaction: Insufficient Funds");

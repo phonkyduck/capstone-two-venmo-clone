@@ -49,7 +49,7 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public BigDecimal transferTE(BigDecimal amount, int to, int from) {
+    public BigDecimal sendTE(BigDecimal amount, int to, int from) {
         int accountToId = getAccount(to).getAccountId();
         int accountFromId = getAccount(from).getAccountId();
         transferDao.addTransfer(amount,accountToId,accountFromId,2,2);
@@ -63,7 +63,6 @@ public class JdbcAccountDao implements AccountDao {
                 "UPDATE account SET balance = ? " +
                 "WHERE user_id = ?; " +
                 "COMMIT;";
-
 
         jdbcTemplate.update(sqlUpdate, toUser.add(amount), to, fromUser.subtract(amount), from);
         return fromUser;
