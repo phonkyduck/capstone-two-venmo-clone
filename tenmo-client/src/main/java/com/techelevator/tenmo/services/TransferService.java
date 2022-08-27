@@ -6,9 +6,7 @@ import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import io.cucumber.core.gherkin.vintage.internal.gherkin.Token;
 import org.apiguardian.api.API;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
@@ -33,6 +31,8 @@ public class TransferService {
     }
 
     public TransferService(String token, User user) {
+        this.token = token;
+        this.user = user;
     }
 
     public HttpEntity<User> makeEntity() {
@@ -47,7 +47,9 @@ public class TransferService {
     public Transfer[] getAllTransfers() {
         Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "/getAll", makeEntity(), Transfer[].class);
+            ResponseEntity<Transfer[]> response =
+            restTemplate.exchange(API_BASE_URL + "/getAll", HttpMethod.GET , makeEntity(), Transfer[].class);
+            myTransfers = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {

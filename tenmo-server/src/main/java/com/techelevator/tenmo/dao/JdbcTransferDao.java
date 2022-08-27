@@ -22,23 +22,23 @@ public class JdbcTransferDao implements TransferDao{
 //        this.jdbcTemplate = jdbcTemplate;
 //    }
 
-    private final String sqlStatement = "SELECT t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username, ut.username, t.amount, at.user_id, af.user_id" +
-            "FROM Transfer t " +
+    private final String sqlStatement = "SELECT t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username, ut.username, t.amount, at.user_id, af.user_id " +
+            "FROM transfer t " +
             "JOIN transfer_status ts on ts.transfer_status_id = t.transfer_status_id " +
             "JOIN transfer_type tt on tt.transfer_type_id = t.transfer_type_id " +
             "JOIN account af on af.account_id = t.account_from " +
-            "JOIN account at on at.account_id = t.account_to" +
+            "JOIN account at on at.account_id = t.account_to " +
             "JOIN tenmo_user uf on uf.user_id = af.user_id " +
             "JOIN tenmo_user ut on ut.user_id = at.user_id ";
 
 
 
     @Override
-    public List<Transfer> findAll(/*User currentUser*/) {
-        String sql = sqlStatement /*+ "WHERE t.account_from = ? OR t.account_to = ?;"*/;
+    public List<Transfer> findAll(User currentUser) {
+        String sql = sqlStatement + "WHERE t.account_from = ? OR t.account_to = ?;";
 
         List<Transfer> list = new ArrayList<>();
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql/*, currentUser.getId(), currentUser.getId()*/);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, currentUser.getId(), currentUser.getId());
         while (results.next()){
             list.add(mapRowToTransfer(results));
         }
@@ -112,12 +112,13 @@ public class JdbcTransferDao implements TransferDao{
 //        }
 //        return list;
 //    }
+
     public List<Transfer> findTransfer(String username, User currentUser){
         SqlRowSet results;
         if(username != currentUser.getUsername()) {
             String sql = sqlStatement + "WHERE uf.username = ? AND at.user_id = ? OR " +
-                    "ut.username = ? AND af.user_id = ?";
-            results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId(), currentUser.getId(), username);
+                    "ut.username = ? AND af.user_id = ?;";
+            results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId(), username, currentUser.getId());
         } else {
             String sql = sqlStatement + "WHERE uf.username = ? or ut.username = ?";
             results = jdbcTemplate.queryForRowSet(sql, username);

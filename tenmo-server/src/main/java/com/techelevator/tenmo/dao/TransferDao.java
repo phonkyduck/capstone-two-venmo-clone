@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface TransferDao {
-    List<Transfer> findAll(/*User currentUser*/);
+    List<Transfer> findAll(User currentUser);
 //    List<Transfer> findTransferToUser(int id, User currentUserId);
 //    List<Transfer> findTransferToUser(String username , User currentUser);
 //    List<Transfer> findTransferFromUser(int id, User currentUserId);
