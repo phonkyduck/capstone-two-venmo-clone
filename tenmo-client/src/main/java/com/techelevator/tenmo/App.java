@@ -16,7 +16,7 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private AccountService accountService;
     private TransferService transferService;
-    private final UserService userService = new UserService();
+    private UserService userService;
     private final SelectionService selectionService = new SelectionService();
     private final User user = new User();
 
@@ -26,6 +26,10 @@ public class App {
 
     public void startAccountService(){
         this.accountService = new AccountService(currentUser.getToken(), currentUser.getUser());
+    }
+
+    public void startUserService(){
+        this.userService = new UserService(currentUser.getToken(), currentUser.getUser());
     }
 
     public static void main(String[] args) {
@@ -120,6 +124,7 @@ public class App {
             } else if (menuSelection == 4)  {
 		        findTransferByID();
             } else if (menuSelection == 5) {
+                startUserService();
 		        selectionService.printArray(userService.getUsers());
             } else if (menuSelection == 0) {
 		        continue;

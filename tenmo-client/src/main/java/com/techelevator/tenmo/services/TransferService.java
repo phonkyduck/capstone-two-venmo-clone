@@ -59,10 +59,10 @@ public class TransferService {
     }
 
     public Transfer getTransferById(int id) {
-        Transfer myTransfer = new Transfer();
+        Transfer myTransfer = null;
         try {
             ResponseEntity<Transfer> response =
-            restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET, makeEntity(), Transfer.class);
+            restTemplate.exchange(API_BASE_URL + "/" + id, HttpMethod.GET, makeEntity(), Transfer.class);
             myTransfer = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());

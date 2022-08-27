@@ -47,8 +47,8 @@ public class TestController {
     }
 
     @GetMapping(path = "/{id}")
-    private Transfer getById(@PathVariable int transferId,Principal user){
-        return transferDao.findById(transferId);
+    private Transfer getById(@PathVariable int id){
+        return transferDao.findById(id);
     }
 
     @GetMapping(path = "/adminAll")

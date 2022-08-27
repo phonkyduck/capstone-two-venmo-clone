@@ -3,9 +3,7 @@ package com.techelevator.tenmo.services;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.apiguardian.api.API;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
@@ -18,10 +16,28 @@ public class UserService {
 
     public static final String API_BASE_URL = "http://localhost:8080/user";
     private final RestTemplate restTemplate = new RestTemplate();
-    private final User user = new User();
+    private String token;
 
-    private HttpEntity<User> makeEntity(User user) {
+    public User getUser() {
+        return user;
+    }
+
+    private User user = new User();
+
+    public String getToken() {
+        return token;
+    }
+
+    public UserService(String token, User user){
+        this.token = token;
+        this.user = user;
+    }
+
+    private HttpEntity<User> makeEntity() {
+        User user = getUser();
+        String token = getToken();
         HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new HttpEntity<>(user, headers);
     }
@@ -29,7 +45,9 @@ public class UserService {
     public User[] getUsers(){
         User[] availableUsers = new User[]{};
         try {
-            availableUsers = restTemplate.getForObject(API_BASE_URL, User[].class);
+            ResponseEntity<User[]> response =
+            restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeEntity(), User[].class);
+            availableUsers = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
