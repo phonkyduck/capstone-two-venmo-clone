@@ -215,17 +215,23 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public Transfer findById(int transferId, User currentUser) {
+        Transfer transfer = null;
         String sql = sqlStatement + "WHERE t.transfer_id = ? AND at.user_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId, currentUser);
-        Transfer transfer = mapRowToTransfer(results);
+        while(results.next()) {
+            transfer = mapRowToTransfer(results);
+        }
         return transfer;
     }
 
     @Override
     public Transfer findById(int transferId) {
+        Transfer transfer = null;
         String sql = sqlStatement + "WHERE t.transfer_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
-        Transfer transfer = mapRowToTransfer(results);
+        while(results.next()) {
+            transfer = mapRowToTransfer(results);
+        }
         return transfer;
     }
 
