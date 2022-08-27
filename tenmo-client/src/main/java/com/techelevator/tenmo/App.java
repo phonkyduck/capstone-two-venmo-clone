@@ -14,11 +14,19 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-    private final AccountService accountService = new AccountService();
-    private final TransferService transferService = new TransferService(currentUser.getToken(), currentUser.getUser());
+    private AccountService accountService;
+    private TransferService transferService;
     private final UserService userService = new UserService();
     private final SelectionService selectionService = new SelectionService();
     private final User user = new User();
+
+    public void startTransferService(){
+        this.transferService = new TransferService(currentUser.getToken(), currentUser.getUser());
+    }
+
+    public void startAccountService(){
+        this.accountService = new AccountService(currentUser.getToken(), currentUser.getUser());
+    }
 
     public static void main(String[] args) {
         App app = new App();
@@ -92,11 +100,13 @@ public class App {
 
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
+        startAccountService();
         accountService.printCurrentBalance();
 	}
 
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
+        startTransferService();
 		int menuSelection = -1;
 		while (menuSelection != 0) {
 		    consoleService.printTransferMenu();
@@ -115,6 +125,7 @@ public class App {
 		        continue;
             } else {
                 System.out.println("Invalid Selection");
+                menuSelection = -1;
             }
 		    consoleService.pause();
         }
@@ -144,34 +155,37 @@ public class App {
 	}
 
 	private void transferSubMenuId() {
-        consoleService.printTransferFilterMenu();
-        int subMenuSelection = -1;
-        while (subMenuSelection != 0) {
-            if (subMenuSelection == 1) {
+        int menuSelection = -1;
+        while (menuSelection != 0) {
+            consoleService.printTransferFilterMenu();
+            menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
+            if (menuSelection == 1) {
                 int userId = consoleService.promptForInt("Please enter the User ID of the recipient: ");
                 selectionService.printArray(transferService.getTransfer(userId, 1));
-            } else if (subMenuSelection == 2) {
+            } else if (menuSelection == 2) {
                 int userId = consoleService.promptForInt("Please enter the User ID of the sender: ");
                 selectionService.printArray(transferService.getTransfer(userId, 0));
-            } else if (subMenuSelection == 0) {
+            } else if (menuSelection == 0) {
                 continue;
             } else {
                 System.out.println("Invalid Selection");
+                menuSelection = 0;
             }
         }
     }
 
     private void transferSubMenuUsername() {
-        consoleService.printTransferFilterMenu();
-        int subMenuSelection = -1;
-        while (subMenuSelection != 0) {
-            if (subMenuSelection == 1) {
+        int menuSelection = -1;
+        while (menuSelection != 0) {
+            consoleService.printTransferFilterMenu();
+            menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
+            if (menuSelection == 1) {
                 String username = consoleService.promptForString("Please enter the username of the recipient: ");
                 selectionService.printArray(transferService.getTransfer(username, 1));
-            } else if (subMenuSelection == 2) {
+            } else if (menuSelection == 2) {
                 String username = consoleService.promptForString("Please enter the username of the sender: ");
                 selectionService.printArray(transferService.getTransfer(username, 0));
-            } else if (subMenuSelection == 0) {
+            } else if (menuSelection == 0) {
                 continue;
             } else {
                 System.out.println("Invalid Selection");
@@ -181,7 +195,7 @@ public class App {
 
     private void findTransferByID() {
         int transferId = consoleService.promptForInt("Please enter the Transfer ID: ");
-        selectionService.printTransfer(transferService.getTransferByIdAdmin(transferId));
+        selectionService.printTransfer(transferService.getTransferById(transferId));
     }
 
 }

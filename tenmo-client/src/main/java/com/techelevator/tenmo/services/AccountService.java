@@ -2,9 +2,7 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
@@ -18,8 +16,26 @@ public class AccountService {
     public static final  String API_BASE_URL = "http://localhost:8080/user/account/";
     private final RestTemplate restTemplate = new RestTemplate();
 
+    public String getToken() {
+        return token;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    private String token;
+    private User user;
+
+    public AccountService(String token, User user) {
+        this.token = token;
+        this.user = user;
+    }
+
     public BigDecimal getBalance(){
-        accountBalance = restTemplate.getForObject(API_BASE_URL, BigDecimal.class);
+        ResponseEntity <BigDecimal> response =
+        restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeEntity(), BigDecimal.class);
+        accountBalance = response.getBody();
         return accountBalance;
     }
 
@@ -29,7 +45,7 @@ public class AccountService {
             if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
                 error = "zero";
             } else if (fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
-                restTemplate.put(API_BASE_URL + "/" + toUser.getId() + "-" + fromUser.getId(), makeEntity(amount));
+                restTemplate.put(API_BASE_URL + "/" + toUser.getId() + "-" + fromUser.getId(), makeEntity());
                 error = "success";
             } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
                 error = "amount";
@@ -44,10 +60,13 @@ public class AccountService {
         return error;
     }
 
-    private HttpEntity<BigDecimal> makeEntity(BigDecimal amount) {
+    private HttpEntity<User> makeEntity() {
+        User user = getUser();
+        String token = getToken();
         HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(amount, headers);
+        return new HttpEntity<>(user, headers);
     }
 
     public void printCurrentBalance(){

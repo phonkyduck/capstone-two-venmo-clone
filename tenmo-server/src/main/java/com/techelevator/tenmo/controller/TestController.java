@@ -41,13 +41,16 @@ public class TestController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(path = "/admin/{id}")
+    private Transfer getByIdAdmin(@PathVariable int id){
+        return transferDao.findById(id);
+    }
+
     @GetMapping(path = "/{id}")
     private Transfer getById(@PathVariable int transferId,Principal user){
         return transferDao.findById(transferId, userDao.findByUsername(user.getName()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/adminAll")
     private List<Transfer> getAllAdmin(){
         return transferDao.findAllAdmin();

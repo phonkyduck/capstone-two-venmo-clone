@@ -61,7 +61,9 @@ public class TransferService {
     public Transfer getTransferById(int id) {
         Transfer myTransfer = new Transfer();
         try {
-            myTransfer = restTemplate.getForObject(API_BASE_URL + "/" + id, Transfer.class);
+            ResponseEntity<Transfer> response =
+            restTemplate.exchange(API_BASE_URL + id, HttpMethod.GET, makeEntity(), Transfer.class);
+            myTransfer = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -73,7 +75,10 @@ public class TransferService {
     public Transfer getTransferByIdAdmin(int id) {
         Transfer myTransfer = new Transfer();
         try {
-            myTransfer = restTemplate.getForObject(API_BASE_URL + "/admin/" + id, Transfer.class);
+            ResponseEntity<Transfer> response =
+            restTemplate.exchange(API_BASE_URL + "/admin/" + id, HttpMethod.GET, makeEntity(), Transfer.class);
+            myTransfer = response.getBody();
+
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -85,7 +90,9 @@ public class TransferService {
     public Transfer[] getTransfer(String username) {
         Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "?username_like=" + username, Transfer[].class);
+            ResponseEntity<Transfer[]> response =
+            restTemplate.exchange(API_BASE_URL + "?username_like=" + username, HttpMethod.GET, makeEntity(), Transfer[].class);
+            myTransfers = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -97,7 +104,9 @@ public class TransferService {
     public Transfer[] getTransfer(int id) {
         Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "?user_id=" + id, Transfer[].class);
+            ResponseEntity<Transfer[]> response =
+            restTemplate.exchange(API_BASE_URL + "?user_id=" + id, HttpMethod.GET, makeEntity(), Transfer[].class);
+            myTransfers = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -109,7 +118,9 @@ public class TransferService {
     public Transfer[] getTransfer(String username, int isFrom) {
         Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "?username_like=" + username + "?filter=" + isFrom, Transfer[].class);
+            ResponseEntity<Transfer[]> response =
+            restTemplate.exchange(API_BASE_URL + "?username_like=" + username + "&filter=" + isFrom, HttpMethod.GET, makeEntity(), Transfer[].class);
+            myTransfers = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -121,7 +132,9 @@ public class TransferService {
     public Transfer[] getTransfer(int id, int isFrom) {
         Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "?user_id=" + id + "?filter=" + isFrom, Transfer[].class);
+            ResponseEntity<Transfer[]> response =
+            restTemplate.exchange(API_BASE_URL + "?user_id=" + id + "&filter=" + isFrom, HttpMethod.GET, makeEntity(), Transfer[].class);
+            myTransfers = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
