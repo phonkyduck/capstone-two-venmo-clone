@@ -37,7 +37,4 @@ public class AccountController {
         accountDao.addTE(amount, userDao.findIdByUsername( user.getName()));
         return amount;
     }
-
-
-
 }

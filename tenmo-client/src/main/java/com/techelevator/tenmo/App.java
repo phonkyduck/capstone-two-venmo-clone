@@ -10,16 +10,15 @@ import java.math.BigDecimal;
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
+    private AuthenticatedUser currentUser;
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private final AccountService accountService = new AccountService();
-    private final TransferService transferService = new TransferService();
+    private final TransferService transferService = new TransferService(currentUser.getToken(), currentUser.getUser());
     private final UserService userService = new UserService();
     private final SelectionService selectionService = new SelectionService();
     private final User user = new User();
-
-    private AuthenticatedUser currentUser;
 
     public static void main(String[] args) {
         App app = new App();

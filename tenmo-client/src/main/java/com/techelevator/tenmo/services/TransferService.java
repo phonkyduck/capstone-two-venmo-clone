@@ -1,7 +1,10 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
+import io.cucumber.core.gherkin.vintage.internal.gherkin.Token;
 import org.apiguardian.api.API;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,17 +20,34 @@ import java.util.List;
 public class TransferService {
     public static final String API_BASE_URL = "http://localhost:8080/user/transfer";
     private final RestTemplate restTemplate = new RestTemplate();
+    private final AuthenticatedUser authenticatedUser = new AuthenticatedUser();
+    private String token;
+    private User user;
 
-    private HttpEntity<Integer> makeEntity(Integer id) {
+    public String getToken() {
+        return token;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public TransferService(String token, User user) {
+    }
+
+    public HttpEntity<User> makeEntity() {
+        User user = getUser();
+        String token = getToken();
         HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(id, headers);
+        return new HttpEntity<>(user, headers);
     }
 
     public Transfer[] getAllTransfers() {
         Transfer[] myTransfers = new Transfer[]{};
         try {
-            myTransfers = restTemplate.getForObject(API_BASE_URL + "/getAll", Transfer[].class);
+            myTransfers = restTemplate.getForObject(API_BASE_URL + "/getAll", makeEntity(), Transfer[].class);
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
