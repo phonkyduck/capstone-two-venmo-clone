@@ -5,13 +5,30 @@ import java.math.BigDecimal;
 public class Transfer {
 
     private int id;
-    private String type;
-    private String status;
-//    private int toId;
+    private int type;
+    private int status;
+    private int toAccountId;
     private User toUser;
-//    private int fromId;
+    private int fromAccountId;
     private User fromUser;
     private BigDecimal amount;
+
+
+    public int getToAccountId() {
+        return toAccountId;
+    }
+
+    public void setToAccountId(int toAccountId) {
+        this.toAccountId = toAccountId;
+    }
+
+    public int getFromAccountId() {
+        return fromAccountId;
+    }
+
+    public void setFromAccountId(int fromAccountId) {
+        this.fromAccountId = fromAccountId;
+    }
 
     public int getId() {
         return id;
@@ -21,19 +38,19 @@ public class Transfer {
         this.id = id;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

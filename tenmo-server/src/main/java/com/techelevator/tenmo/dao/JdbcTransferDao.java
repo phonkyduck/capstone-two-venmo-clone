@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ public class JdbcTransferDao implements TransferDao{
     private JdbcTemplate jdbcTemplate;
 
     private JdbcUserDao userDao;
-    private final String sqlStatement = "SELECT t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username, ut.username, t.amount, at.user_id, af.user_id " +
+    private JdbcAccountDao accountDao;
+
+    private final String sqlStatement = "SELECT at.account_id, af.account_id, t.transfer_type_id, t.transfer_status_id, t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username, ut.username, t.amount, at.user_id, af.user_id " +
             "FROM transfer t " +
             "JOIN transfer_status ts on ts.transfer_status_id = t.transfer_status_id " +
             "JOIN transfer_type tt on tt.transfer_type_id = t.transfer_type_id " +
@@ -245,7 +248,11 @@ public class JdbcTransferDao implements TransferDao{
     public void addTransfer(Transfer transfer) {
         String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                 "VALUES (?,?,?,?,?);";
-        jdbcTemplate.update(sql,Integer.valueOf(transfer.getType()),Integer.valueOf(transfer.getStatus()),transfer.getFromUser().getId(),transfer.getToUser().getId(),transfer.getAmount());
+        jdbcTemplate.update(sql, transfer.getType(), transfer.getStatus(), retreiveAccountId(transfer.getFromAccountId()), retreiveAccountId(transfer.getToAccountId()), transfer.getAmount());
+    }
+
+    public Account retreiveAccountId(int id) {
+        return accountDao.getAccount(id);
     }
 
     private Transfer mapRowToTransfer(SqlRowSet rs) {
@@ -254,8 +261,8 @@ public class JdbcTransferDao implements TransferDao{
         transfer.setToUser(userDao.findByUsername(rs.getString("ut.username")) );
         transfer.setFromUser(userDao.findByUsername( rs.getString("uf.username")));
         transfer.setAmount(rs.getBigDecimal("t.amount"));
-        transfer.setType(rs.getString("tt.transfer_type_desc"));
-        transfer.setStatus(rs.getString("tt.transfer_status_desc"));
+        transfer.setType(rs.getInt("t.transfer_type_id"));
+        transfer.setStatus(rs.getInt("t.transfer_status_id"));
         return transfer;
     }
 }
