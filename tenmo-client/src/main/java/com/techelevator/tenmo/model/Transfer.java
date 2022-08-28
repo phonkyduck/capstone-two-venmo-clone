@@ -5,12 +5,14 @@ import java.math.BigDecimal;
 public class Transfer {
 
     private int id;
-    private String type;
-    private String status;
-    private int toId;
-    private String toUser;
-    private int fromId;
-    private String fromUser;
+    private int type;
+    private int status;
+//    private int toId;
+//    private String toUser;
+//    private int fromId;
+//    private String fromUser;
+    private User toUser;
+    private User fromUser;
     private BigDecimal amount;
 
     public int getId() {
@@ -21,37 +23,53 @@ public class Transfer {
         this.id = id;
     }
 
-    public String getType() {
+    public User getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
+    }
+
+    public User getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public int getToId() {
-        return toId;
-    }
-
-    public void setToId(int toId) {
-        this.toId = toId;
-    }
-
-    public int getFromId() {
-        return fromId;
-    }
-
-    public void setFromId(int fromId) {
-        this.fromId = fromId;
-    }
+//    public int getToId() {
+//        return toId;
+//    }
+//
+//    public void setToId(int toId) {
+//        this.toId = toId;
+//    }
+//
+//    public int getFromId() {
+//        return fromId;
+//    }
+//
+//    public void setFromId(int fromId) {
+//        this.fromId = fromId;
+//    }
 
     public BigDecimal getAmount() {
         return amount;
@@ -61,19 +79,19 @@ public class Transfer {
         this.amount = amount;
     }
 
-    public String getToUser() {
-        return toUser;
-    }
+//    public String getToUser() {
+//        return toUser;
+//    }
+//
+//    public void setToUser(String toUser) {
+//        this.toUser = toUser;
+//    }
+//
+//    public String getFromUser() {
+//        return fromUser;
+//    }
 
-    public void setToUser(String toUser) {
-        this.toUser = toUser;
-    }
-
-    public String getFromUser() {
-        return fromUser;
-    }
-
-    public void setFromUser(String fromUser) {
-        this.fromUser = fromUser;
-    }
+//    public void setFromUser(String fromUser) {
+//        this.fromUser = fromUser;
+//    }
 }

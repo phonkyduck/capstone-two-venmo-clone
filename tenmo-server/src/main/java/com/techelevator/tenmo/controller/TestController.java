@@ -1,6 +1,7 @@
 package com.techelevator.tenmo.controller;
 
 
+import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.JdbcTransferDao;
 import com.techelevator.tenmo.dao.JdbcUserDao;
 import com.techelevator.tenmo.model.Transfer;
@@ -9,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class TestController {
 
     @Autowired
     private JdbcUserDao userDao;
+
+    @Autowired
+    private JdbcAccountDao accountDao;
 
     @GetMapping(path = "/getAll")
     private List<Transfer> getAll(Principal user){
@@ -54,6 +59,13 @@ public class TestController {
     @GetMapping(path = "/adminAll")
     private List<Transfer> getAllAdmin(){
         return transferDao.findAllAdmin();
+    }
+
+    @PutMapping(path = "/send")
+    public BigDecimal Send(@RequestBody Transfer transfer){
+        accountDao.sendTE(transfer);
+        transferDao.addTransfer(transfer);
+        return transfer.getAmount();
     }
 
 }

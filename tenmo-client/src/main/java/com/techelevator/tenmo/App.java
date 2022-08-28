@@ -1,6 +1,7 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.*;
@@ -21,7 +22,7 @@ public class App {
     private final User user = new User();
 
     public void startTransferService(){
-        this.transferService = new TransferService(currentUser.getToken(), currentUser.getUser());
+        this.transferService = new TransferService(currentUser.getToken(), currentUser.getUser(),accountService);
     }
 
     public void startAccountService(){
@@ -31,6 +32,12 @@ public class App {
     public void startUserService(){
         this.userService = new UserService(currentUser.getToken(), currentUser.getUser());
     }
+    public void startServices(){
+        startUserService();
+        startAccountService();
+        startTransferService();
+    }
+
 
     public static void main(String[] args) {
         App app = new App();
@@ -149,7 +156,8 @@ public class App {
         String toUser = consoleService.promptForString("Please enter the recipient's username: ");
         recipient = userService.findUserByString(toUser);
         BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to send: ");
-        String error = accountService.sendTE(currentUser.getUser(), recipient, amount);
+        Transfer transfer = transferService.prepareSendTransfer(recipient,currentUser.getUser(),amount);
+        String error = transferService.sendTE(transfer);
         accountService.printSendCheck(error);
 
 	}

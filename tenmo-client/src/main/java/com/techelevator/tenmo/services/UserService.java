@@ -61,11 +61,11 @@ public class UserService {
         User[] searchList;
         searchList = getUsers();
         for (User user: searchList) {
-            if(user.getUsername() == username){
+            if(user.getUsername().equals(username)){
                 foundUser = user;
             }
         }
-        if(foundUser.getUsername() == ""){
+        if(foundUser.getUsername().equals("")){
             throw new IllegalArgumentException("Not a valid user");
         }
         return foundUser;

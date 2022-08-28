@@ -19,7 +19,7 @@ public interface TransferDao {
     List<Transfer> findTransfer(String username, User currentUser, int isFrom);
     List<Transfer> findTransfer(int id, User currentUser, int isFrom);
     List<Transfer> findAllAdmin();
-    void addTransfer(BigDecimal amount, int to, int from, int status, int type);
+    void addTransfer(Transfer transfer);
 
 
 

@@ -2,6 +2,7 @@ package com.techelevator.tenmo.dao;
 
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -49,14 +50,14 @@ public class JdbcAccountDao implements AccountDao {
     }
 
     @Override
-    public BigDecimal sendTE(BigDecimal amount, int to, int from) {
-        int accountToId = getAccount(to).getAccountId();
-        int accountFromId = getAccount(from).getAccountId();
-        transferDao.addTransfer(amount,accountToId,accountFromId,2,2);
+    public BigDecimal sendTE(Transfer transfer) {
+        int accountToId = getAccount(Math.toIntExact(transfer.getToUser().getId())).getAccountId();
+        int accountFromId = getAccount(Math.toIntExact(transfer.getFromUser().getId())).getAccountId();
+        transferDao.addTransfer(transfer);
 
         String sql = "SELECT balance FROM account WHERE user_id = ?;";
-        BigDecimal toUser = jdbcTemplate.queryForObject(sql, BigDecimal.class,  to);
-        BigDecimal fromUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, from);
+        BigDecimal toUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getToUser().getId());
+        BigDecimal fromUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getFromUser().getId());
         String sqlUpdate = "BEGIN TRANSACTION; "
                 + "UPDATE account SET balance = ? " +
                 "WHERE user_id = ?; " +
@@ -64,9 +65,12 @@ public class JdbcAccountDao implements AccountDao {
                 "WHERE user_id = ?; " +
                 "COMMIT;";
 
-        jdbcTemplate.update(sqlUpdate, toUser.add(amount), to, fromUser.subtract(amount), from);
+        jdbcTemplate.update(sqlUpdate, toUser.add(transfer.getAmount()), transfer.getToUser().getId(), fromUser.subtract(transfer.getAmount()), transfer.getFromUser().getId());
         return fromUser;
     }
+
+
+
     private Account mapRowToUser(SqlRowSet rs) {
         Account user = new Account();
         user.setAccountId(rs.getInt("account_id"));

@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
@@ -39,14 +40,17 @@ public class AccountService {
         return accountBalance;
     }
 
-    public String sendTE(User fromUser, User toUser, BigDecimal amount){
+    public String sendTE(Transfer transfer){
         getBalance();
         String error = "";
+        int fromUser = Math.toIntExact(transfer.getFromUser().getId());
+        int toUser = Math.toIntExact(transfer.getToUser().getId());
+        BigDecimal amount = transfer.getAmount();
         try {
             if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
                 error = "zero";
             } else if (fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
-                restTemplate.put(API_BASE_URL + "/" + toUser.getId() + "/" + fromUser.getId() + "/" + amount, makeEntity());
+                restTemplate.put(API_BASE_URL, makeEntity());
                 error = "success";
             } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
                 error = "amount";

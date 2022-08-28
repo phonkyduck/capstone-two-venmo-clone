@@ -26,11 +26,11 @@ public class AccountController {
 //        return userDao.findIdByUsername(user.getName());
     }
 
-    @PutMapping(path = "/{to}/{from}/{amount}")
-    public BigDecimal transfer( @PathVariable BigDecimal amount, @PathVariable int to, @PathVariable int from){
-        accountDao.sendTE(amount, to, from);
-        return amount;
-    }
+//    @PutMapping(path = "{to}/{from}/{amount}")
+//    public BigDecimal transfer(@PathVariable int to, @PathVariable int from, @PathVariable BigDecimal amount){
+//        accountDao.sendTEUpdate(amount, to, from);
+//        return amount;
+//    }
 
     @PutMapping(path = "/add")
     public BigDecimal addToAccount(@RequestBody BigDecimal amount, Principal user){

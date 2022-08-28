@@ -22,6 +22,7 @@ public class TransferService {
     private String token;
     private User user;
 
+
     public String getToken() {
         return token;
     }
@@ -30,19 +31,13 @@ public class TransferService {
         return user;
     }
 
-    public TransferService(String token, User user) {
+    public TransferService(String token, User user, AccountService accountService) {
         this.token = token;
         this.user = user;
+        this.accountService = accountService;
     }
+    private AccountService accountService;
 
-    public HttpEntity<User> makeEntity() {
-        User user = getUser();
-        String token = getToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(user, headers);
-    }
 
     public Transfer[] getAllTransfers() {
         Transfer[] myTransfers = new Transfer[]{};
@@ -142,5 +137,49 @@ public class TransferService {
         }
         return myTransfers;
     }
-
+    public String sendTE(Transfer transfer){
+       BigDecimal accountBalance = accountService.getBalance();
+        String error = "";
+        int fromUser = Math.toIntExact(transfer.getFromUser().getId());
+        int toUser = Math.toIntExact(transfer.getToUser().getId());
+        BigDecimal amount = transfer.getAmount();
+        try {
+            if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
+                error = "zero";
+            } else if (fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
+                restTemplate.put(API_BASE_URL+"/send", makeTransferEntity(transfer));
+                error = "success";
+            } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
+                error = "amount";
+            } else if (fromUser == toUser && accountBalance.compareTo(amount) >= 0){
+                error = "self";
+            } else { error = "unknown";}
+        } catch(RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return error;
+    }
+    public Transfer prepareSendTransfer(User toUser, User fromUser,BigDecimal amount){
+        Transfer transfer = new Transfer();
+        transfer.setToUser(toUser);
+        transfer.setFromUser(fromUser);
+        transfer.setAmount(amount);
+        transfer.setType(2);
+        transfer.setStatus(2);
+        return transfer;
+    }
+    public HttpEntity<Void> makeEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getToken());
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<>(headers);
+    }
+    public HttpEntity<Transfer> makeTransferEntity(Transfer transfer){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getToken());
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<>(transfer , headers);
+    }
 }
