@@ -151,7 +151,7 @@ public class TransferService {
                 error = "success";
             } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
                 error = "amount";
-            } else if (fromUser == toUser && accountBalance.compareTo(amount) >= 0){
+            } else if (fromUser == toUser){
                 error = "self";
             } else { error = "unknown";}
         } catch(RestClientResponseException e) {
@@ -161,7 +161,7 @@ public class TransferService {
         }
         return error;
     }
-    public Transfer prepareSendTransfer(User toUser, User fromUser,BigDecimal amount){
+    public Transfer prepareSendTransfer(User toUser, User fromUser, BigDecimal amount){
         Transfer transfer = new Transfer();
         transfer.setToUser(toUser);
         transfer.setFromUser(fromUser);

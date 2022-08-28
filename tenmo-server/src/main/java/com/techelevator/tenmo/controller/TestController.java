@@ -64,7 +64,6 @@ public class TestController {
     @PutMapping(path = "/send")
     public BigDecimal Send(@RequestBody Transfer transfer){
         accountDao.sendTE(transfer);
-        transferDao.addTransfer(transfer);
         return transfer.getAmount();
     }
 

@@ -156,7 +156,7 @@ public class App {
         String toUser = consoleService.promptForString("Please enter the recipient's username: ");
         recipient = userService.findUserByString(toUser);
         BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to send: ");
-        Transfer transfer = transferService.prepareSendTransfer(recipient,currentUser.getUser(),amount);
+        Transfer transfer = transferService.prepareSendTransfer(recipient, currentUser.getUser(), amount);
         String error = transferService.sendTE(transfer);
         accountService.printSendCheck(error);
 

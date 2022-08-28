@@ -53,6 +53,8 @@ public class JdbcAccountDao implements AccountDao {
     public BigDecimal sendTE(Transfer transfer) {
         int accountToId = getAccount(Math.toIntExact(transfer.getToUser().getId())).getAccountId();
         int accountFromId = getAccount(Math.toIntExact(transfer.getFromUser().getId())).getAccountId();
+        transfer.setToAccountId(accountToId);
+        transfer.setFromAccountId(accountFromId);
         transferDao.addTransfer(transfer);
 
         String sql = "SELECT balance FROM account WHERE user_id = ?;";

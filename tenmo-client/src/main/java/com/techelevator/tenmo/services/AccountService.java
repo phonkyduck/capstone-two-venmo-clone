@@ -40,30 +40,30 @@ public class AccountService {
         return accountBalance;
     }
 
-    public String sendTE(Transfer transfer){
-        getBalance();
-        String error = "";
-        int fromUser = Math.toIntExact(transfer.getFromUser().getId());
-        int toUser = Math.toIntExact(transfer.getToUser().getId());
-        BigDecimal amount = transfer.getAmount();
-        try {
-            if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
-                error = "zero";
-            } else if (fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
-                restTemplate.put(API_BASE_URL, makeEntity());
-                error = "success";
-            } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
-                error = "amount";
-            } else if (fromUser == toUser && accountBalance.compareTo(amount) >= 0){
-                error = "self";
-            } else { error = "unknown";}
-        } catch(RestClientResponseException e) {
-            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
-        } catch (ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-        return error;
-    }
+//    public String sendTE(Transfer transfer){
+//        getBalance();
+//        String error = "";
+//        int fromUser = Math.toIntExact(transfer.getFromUser().getId());
+//        int toUser = Math.toIntExact(transfer.getToUser().getId());
+//        BigDecimal amount = transfer.getAmount();
+//        try {
+//            if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
+//                error = "zero";
+//            } else if (fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
+//                restTemplate.put(API_BASE_URL, makeEntity());
+//                error = "success";
+//            } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
+//                error = "amount";
+//            } else if (fromUser == toUser && accountBalance.compareTo(amount) >= 0){
+//                error = "self";
+//            } else { error = "unknown";}
+//        } catch(RestClientResponseException e) {
+//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+//        } catch (ResourceAccessException e) {
+//            BasicLogger.log(e.getMessage());
+//        }
+//        return error;
+//    }
 
     private HttpEntity<User> makeEntity() {
         User user = getUser();
