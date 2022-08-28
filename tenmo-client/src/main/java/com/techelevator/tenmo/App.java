@@ -82,6 +82,9 @@ public class App {
         int menuSelection = -1;
         while (menuSelection != 0) {
             consoleService.printMainMenu();
+            startUserService();
+            startAccountService();
+            startTransferService();
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
                 viewCurrentBalance();
@@ -104,13 +107,11 @@ public class App {
 
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
-        startAccountService();
         accountService.printCurrentBalance();
 	}
 
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
-        startTransferService();
 		int menuSelection = -1;
 		while (menuSelection != 0) {
 		    consoleService.printTransferMenu();
@@ -124,7 +125,6 @@ public class App {
             } else if (menuSelection == 4)  {
 		        findTransferByID();
             } else if (menuSelection == 5) {
-                startUserService();
 		        selectionService.printArray(userService.getUsers());
             } else if (menuSelection == 0) {
 		        continue;

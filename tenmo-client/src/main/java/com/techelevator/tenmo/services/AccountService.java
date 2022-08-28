@@ -13,7 +13,7 @@ public class AccountService {
 
     private BigDecimal accountBalance;
 
-    public static final  String API_BASE_URL = "http://localhost:8080/user/account/";
+    public static final  String API_BASE_URL = "http://localhost:8080/user/account";
     private final RestTemplate restTemplate = new RestTemplate();
 
     public String getToken() {
@@ -34,18 +34,19 @@ public class AccountService {
 
     public BigDecimal getBalance(){
         ResponseEntity <BigDecimal> response =
-        restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeEntity(), BigDecimal.class);
+        restTemplate.exchange(API_BASE_URL + "/", HttpMethod.GET, makeEntity(), BigDecimal.class);
         accountBalance = response.getBody();
         return accountBalance;
     }
 
     public String sendTE(User fromUser, User toUser, BigDecimal amount){
+        getBalance();
         String error = "";
         try {
             if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
                 error = "zero";
             } else if (fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
-                restTemplate.put(API_BASE_URL + "/" + toUser.getId() + "-" + fromUser.getId(), makeEntity());
+                restTemplate.put(API_BASE_URL + "/" + toUser.getId() + "/" + fromUser.getId() + "/" + amount, makeEntity());
                 error = "success";
             } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
                 error = "amount";
