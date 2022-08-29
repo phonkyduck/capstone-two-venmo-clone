@@ -152,10 +152,10 @@ public class JdbcTransferDao implements TransferDao{
         SqlRowSet results;
         if(isFrom == 1){
             if(username != currentUser.getUsername()) {
-                String sql = sqlStatement + "WHERE uf.username = ? AND at.user_id = ?";
-                results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId());
+                String sql = sqlStatement + "WHERE af.user_id = ? AND ut.username = ?";
+                results = jdbcTemplate.queryForRowSet(sql, currentUser.getId(), username );
             } else {
-                String sql = sqlStatement + "WHERE uf.username = ?";
+                String sql = sqlStatement + "WHERE ut.username = ?";
                 results = jdbcTemplate.queryForRowSet(sql, username);
             }
             List<Transfer> list = new ArrayList<>();
@@ -167,7 +167,7 @@ public class JdbcTransferDao implements TransferDao{
         else{
             if(username != currentUser.getUsername()) {
                 String sql = sqlStatement + "WHERE ut.username = ? AND af.user_id = ?";
-                results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId());
+                results = jdbcTemplate.queryForRowSet(sql, currentUser.getId() , username);
             } else {
                 String sql = sqlStatement + "WHERE ut.username = ?";
                 results = jdbcTemplate.queryForRowSet(sql, username);
@@ -186,7 +186,7 @@ public class JdbcTransferDao implements TransferDao{
         if(isFrom == 1){
             if(id != currentUser.getId()) {
                 String sql = sqlStatement + "WHERE af.user_id = ? AND at.user_id = ?";
-                results = jdbcTemplate.queryForRowSet(sql, id, currentUser.getId());
+                results = jdbcTemplate.queryForRowSet(sql,currentUser.getId() ,id );
             } else {
                 String sql = sqlStatement + "WHERE af.user_id = ?";
                 results = jdbcTemplate.queryForRowSet(sql, id);

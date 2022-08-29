@@ -63,6 +63,7 @@ public class TransferService {
             ResponseEntity<Transfer> response =
             restTemplate.exchange(API_BASE_URL + "/" + id, HttpMethod.GET, makeEntity(), Transfer.class);
             myTransfer = response.getBody();
+            myTransfer.setUsers();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {

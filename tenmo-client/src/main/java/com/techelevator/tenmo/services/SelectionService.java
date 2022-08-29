@@ -24,8 +24,8 @@ public class SelectionService {
         if (transfers == null){
             System.out.println("No transfer found.");
         } else {
-            System.out.println("Transfer ID: " + transfers.getId() + " " + transfers.getFromUser() + " sent " +
-                    transfers.getToUser() + " $" + transfers.getAmount() + ".");
+            System.out.println("Transfer ID: " + transfers.getId() + " " + transfers.getFromUser().getUsername() + " sent " +
+                    transfers.getToUser().getUsername() + " $" + transfers.getAmount() + ".");
         }
     }
 
