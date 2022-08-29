@@ -124,7 +124,8 @@ public class App {
 		    consoleService.printTransferMenu();
 		    menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
 		    if (menuSelection == 1) {
-		        selectionService.printArray(transferService.getAllTransfers());
+
+                selectionService.printArray(transferService.getAllTransfers());
             } else if (menuSelection == 2) {
 		        transferSubMenuId();
             } else if (menuSelection == 3) {
@@ -189,7 +190,7 @@ public class App {
         String fromUser = consoleService.promptForString("Please enter the username: ");
         requestee = userService.findUserByString(fromUser);
         BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to request: ");
-        Transfer transfer = transferService.prepareTransfer(requestee, currentUser.getUser(), amount, 1, 1);
+        Transfer transfer = transferService.prepareTransfer(currentUser.getUser(), requestee, amount, 1, 1);
         String error = transferService.requestTE(transfer);
         accountService.printSendCheck(error);
 	}

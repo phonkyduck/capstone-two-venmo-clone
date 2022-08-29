@@ -35,7 +35,7 @@ public class JdbcTransferDao implements TransferDao{
 
     @Override
     public List<Transfer> findAll(User currentUser) {
-        String sql = sqlStatement + "WHERE af.user_id = ? OR at.user_id = ?;";
+        String sql = sqlStatement + "WHERE (af.user_id = ? OR at.user_id = ?) AND t.transfer_type_id = 2;";
 
         List<Transfer> list = new ArrayList<>();
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, currentUser.getId(), currentUser.getId());
