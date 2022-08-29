@@ -22,10 +22,12 @@ public class ConsoleService {
     }
 
     public void printPendingMenu(){
+        System.out.println();
         System.out.println("1: View all pending requests.");
         System.out.println("2: View my pending requests.");
         System.out.println("3: View requests awaiting my approval.");
         System.out.println("0: Exit");
+        System.out.println();
     }
 
     public void printGreeting() {
@@ -68,6 +70,14 @@ public class ConsoleService {
         System.out.println();
         System.out.println("1: Filter search by recipient");
         System.out.println("2: Filter search by sender");
+        System.out.println("0: Exit");
+        System.out.println();
+    }
+
+    public void printPendingApprovalMenu(){
+        System.out.println();
+        System.out.println("1: Deny pending request");
+        System.out.println("2: Approve pending request");
         System.out.println("0: Exit");
         System.out.println();
     }

@@ -157,6 +157,7 @@ public class App {
                 selectionService.printMyPending(transfers, currentUser.getUser());
             } else if (menuSelection == 3) {
                 selectionService.printPendingApproval(transfers, currentUser.getUser());
+                pendingApprovalSubMenu();
             } else if (menuSelection == 0) {
                 continue;
             } else {
@@ -226,6 +227,27 @@ public class App {
             } else if (menuSelection == 2) {
                 String username = consoleService.promptForString("Please enter the username of the sender: ");
                 selectionService.printArray(transferService.getTransfer(username, 0));
+            } else if (menuSelection == 0) {
+                continue;
+            } else {
+                System.out.println("Invalid Selection");
+            }
+        }
+    }
+
+    private void pendingApprovalSubMenu() {
+        int menuSelection = -1;
+        while (menuSelection != 0) {
+            consoleService.printPendingApprovalMenu();
+            menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
+            if (menuSelection == 1) {
+                int requestTransfeId = consoleService.promptForInt("Please enter the request transfer Id: ");
+//                selectionService.printArray(transferService.getTransfer(username, 1));
+                continue;
+            } else if (menuSelection == 2) {
+                int username = consoleService.promptForInt("Please enter the request transfer Id: ");
+//                selectionService.printArray(transferService.getTransfer(username, 0));
+                continue;
             } else if (menuSelection == 0) {
                 continue;
             } else {
