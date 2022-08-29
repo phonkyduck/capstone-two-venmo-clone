@@ -19,10 +19,10 @@ public class JdbcTransferDao implements TransferDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private JdbcUserDao userDao;
-    private JdbcAccountDao accountDao;
+    private JdbcUserDao userDao = new JdbcUserDao();
+    private JdbcAccountDao accountDao = new JdbcAccountDao();
 
-    private final String sqlStatement = "SELECT at.account_id, af.account_id, t.transfer_type_id, t.transfer_status_id, t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username, ut.username, t.amount, at.user_id, af.user_id " +
+    private final String sqlStatement = "SELECT at.account_id, af.account_id, t.transfer_type_id, t.transfer_status_id, t.transfer_id, ts.transfer_status_desc, tt.transfer_type_desc, uf.username as from_user, ut.username as to_user, t.amount, at.user_id as to_id, af.user_id as from_id " +
             "FROM transfer t " +
             "JOIN transfer_status ts on ts.transfer_status_id = t.transfer_status_id " +
             "JOIN transfer_type tt on tt.transfer_type_id = t.transfer_type_id " +
@@ -115,13 +115,13 @@ public class JdbcTransferDao implements TransferDao{
 
     public List<Transfer> findTransfer(String username, User currentUser){
         SqlRowSet results;
-        if(username != currentUser.getUsername()) {
+        if(!username.equals(currentUser.getUsername()) ) {
             String sql = sqlStatement + "WHERE uf.username = ? AND at.user_id = ? OR " +
                     "ut.username = ? AND af.user_id = ?;";
             results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId(), username, currentUser.getId());
         } else {
-            String sql = sqlStatement + "WHERE uf.username = ? or ut.username = ?";
-            results = jdbcTemplate.queryForRowSet(sql, username);
+            String sql = sqlStatement + "WHERE uf.username = ? or ut.username = ?;";
+            results = jdbcTemplate.queryForRowSet(sql, username, username);
         }
         List<Transfer> list = new ArrayList<>();
         while(results.next()){
@@ -257,12 +257,14 @@ public class JdbcTransferDao implements TransferDao{
 
     private Transfer mapRowToTransfer(SqlRowSet rs) {
         Transfer transfer = new Transfer();
-        transfer.setId(rs.getInt("t.transfer_id"));
-        transfer.setToUser(userDao.findByUsername(rs.getString("ut.username")) );
-        transfer.setFromUser(userDao.findByUsername( rs.getString("uf.username")));
-        transfer.setAmount(rs.getBigDecimal("t.amount"));
-        transfer.setType(rs.getInt("t.transfer_type_id"));
-        transfer.setStatus(rs.getInt("t.transfer_status_id"));
+        transfer.setId(rs.getInt("transfer_id"));
+        transfer.setToUserId(rs.getInt("to_id")); ;
+        transfer.setFromUserId( rs.getInt("from_id"));
+        transfer.setFromUserName(rs.getString("from_user"));
+        transfer.setToUserName(rs.getString("to_user"));
+        transfer.setAmount(rs.getBigDecimal("amount"));
+        transfer.setType(rs.getInt("transfer_type_id"));
+        transfer.setStatus(rs.getInt("transfer_status_id"));
         return transfer;
     }
 }

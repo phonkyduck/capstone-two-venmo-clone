@@ -114,8 +114,12 @@ public class TransferService {
         Transfer[] myTransfers = new Transfer[]{};
         try {
             ResponseEntity<Transfer[]> response =
-            restTemplate.exchange(API_BASE_URL + "?username_like=" + username + "&filter=" + isFrom, HttpMethod.GET, makeEntity(), Transfer[].class);
+                    restTemplate.exchange(API_BASE_URL + "?username_like=" + username + "&filter=" + isFrom, HttpMethod.GET, makeEntity(), Transfer[].class);
             myTransfers = response.getBody();
+            for (Transfer t :
+                    myTransfers) {
+                t.setUsers();
+            }
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {

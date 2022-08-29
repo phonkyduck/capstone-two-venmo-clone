@@ -7,12 +7,13 @@ public class Transfer {
     private int id;
     private int type;
     private int status;
-//    private int toId;
-//    private String toUser;
-//    private int fromId;
-//    private String fromUser;
+
     private User toUser;
+    private int toUserId;
+    private String toUserName;
     private User fromUser;
+    private int fromUserId;
+    private String fromUserName;
     private BigDecimal amount;
 
     public int getId() {
@@ -25,6 +26,14 @@ public class Transfer {
 
     public User getToUser() {
         return toUser;
+    }
+    public void setUsers(){
+        this.toUser = new User();
+        this.fromUser = new User();
+        this.toUser.setId((long) getToUserId());
+        this.fromUser.setId((long) getFromUserId());
+        this.fromUser.setUsername(getFromUserName());
+        this.toUser.setUsername(getToUserName());
     }
 
     public void setToUser(User toUser) {
@@ -55,22 +64,6 @@ public class Transfer {
         this.status = status;
     }
 
-//    public int getToId() {
-//        return toId;
-//    }
-//
-//    public void setToId(int toId) {
-//        this.toId = toId;
-//    }
-//
-//    public int getFromId() {
-//        return fromId;
-//    }
-//
-//    public void setFromId(int fromId) {
-//        this.fromId = fromId;
-//    }
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -79,19 +72,35 @@ public class Transfer {
         this.amount = amount;
     }
 
-//    public String getToUser() {
-//        return toUser;
-//    }
-//
-//    public void setToUser(String toUser) {
-//        this.toUser = toUser;
-//    }
-//
-//    public String getFromUser() {
-//        return fromUser;
-//    }
+    public int getToUserId() {
+        return toUserId;
+    }
 
-//    public void setFromUser(String fromUser) {
-//        this.fromUser = fromUser;
-//    }
+    public void setToUserId(int toUserId) {
+        this.toUserId = toUserId;
+    }
+
+    public String getToUserName() {
+        return toUserName;
+    }
+
+    public void setToUserName(String toUserName) {
+        this.toUserName = toUserName;
+    }
+
+    public int getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(int fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public String getFromUserName() {
+        return fromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
+    }
 }

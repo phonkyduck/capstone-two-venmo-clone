@@ -15,8 +15,8 @@ public class SelectionService {
 
     public void printArray(Transfer[] transfers){
         for(int i = 0; i < transfers.length; i++){
-            System.out.println("Transfer ID: " + transfers[i].getId() + " " + transfers[i].getFromUser() + " sent " +
-                    transfers[i].getToUser() + " $" + transfers[i].getAmount() + ".");
+            System.out.println("Transfer ID: " + transfers[i].getId() + " " + transfers[i].getFromUser().getUsername() + " sent " +
+                    transfers[i].getToUser().getUsername() + " $" + transfers[i].getAmount() + ".");
         }
     }
 
