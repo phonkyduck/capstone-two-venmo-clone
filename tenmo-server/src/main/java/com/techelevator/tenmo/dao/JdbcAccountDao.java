@@ -71,6 +71,26 @@ public class JdbcAccountDao implements AccountDao {
         return fromUser;
     }
 
+    @Override
+    public void requestTE(Transfer transfer) {
+        int accountToId = getAccount(Math.toIntExact(transfer.getToUser().getId())).getAccountId();
+        int accountFromId = getAccount(Math.toIntExact(transfer.getFromUser().getId())).getAccountId();
+        transfer.setToAccountId(accountToId);
+        transfer.setFromAccountId(accountFromId);
+        transferDao.addTransfer(transfer);
+
+//        String sql = "SELECT balance FROM account WHERE user_id = ?;";
+//        BigDecimal toUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getToUser().getId());
+//        BigDecimal fromUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getFromUser().getId());
+//        String sqlUpdate = "BEGIN TRANSACTION; "
+//                + "UPDATE account SET balance = ? " +
+//                "WHERE user_id = ?; " +
+//                "UPDATE account SET balance = ? " +
+//                "WHERE user_id = ?; " +
+//                "COMMIT;";
+//
+//        jdbcTemplate.update(sqlUpdate, toUser.add(transfer.getAmount()), transfer.getToUser().getId(), fromUser.subtract(transfer.getAmount()), transfer.getFromUser().getId());
+    }
 
 
     private Account mapRowToUser(SqlRowSet rs) {

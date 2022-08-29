@@ -11,6 +11,7 @@ public interface AccountDao {
 
     BigDecimal addTE(BigDecimal amount, int id);
     BigDecimal sendTE(Transfer transfer);
+    void requestTE(Transfer transfer);
     //BigDecimal requestTE();
 
 }

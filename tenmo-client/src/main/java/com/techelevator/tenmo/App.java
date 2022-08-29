@@ -146,7 +146,6 @@ public class App {
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
         int menuSelection = -1;
-        startUserService();
         while (menuSelection != 0) {
             consoleService.printPendingMenu();
             Transfer[] transfers = transferService.getPendingRequest();
@@ -175,7 +174,7 @@ public class App {
         String toUser = consoleService.promptForString("Please enter the recipient's username: ");
         recipient = userService.findUserByString(toUser);
         BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to send: ");
-        Transfer transfer = transferService.prepareSendTransfer(recipient, currentUser.getUser(), amount);
+        Transfer transfer = transferService.prepareTransfer(recipient, currentUser.getUser(), amount, 2, 2);
         String error = transferService.sendTE(transfer);
         accountService.printSendCheck(error);
 
@@ -190,7 +189,7 @@ public class App {
         String fromUser = consoleService.promptForString("Please enter the username: ");
         requestee = userService.findUserByString(fromUser);
         BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to request: ");
-        Transfer transfer = transferService.prepareRequestTransfer(requestee, currentUser.getUser(), amount);
+        Transfer transfer = transferService.prepareTransfer(requestee, currentUser.getUser(), amount, 1, 1);
         String error = transferService.requestTE(transfer);
         accountService.printSendCheck(error);
 	}

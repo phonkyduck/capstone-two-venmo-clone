@@ -184,7 +184,7 @@ public class TransferService {
             if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
                 error = "zero";
             } else if (fromUser != toUser && amount.compareTo(BigDecimal.valueOf(0)) >= 0) {
-                restTemplate.put(API_BASE_URL+"/requests", makeTransferEntity(transfer));
+                restTemplate.put(API_BASE_URL+"/request", makeTransferEntity(transfer));
                 error = "success";
             } else if (fromUser != toUser && amount.compareTo(BigDecimal.valueOf(0)) < 0){
                 error = "amount";
@@ -203,7 +203,7 @@ public class TransferService {
         Transfer[] myTransfers = new Transfer[]{};
         try {
             ResponseEntity<Transfer[]> response =
-                    restTemplate.exchange(API_BASE_URL + "/request", HttpMethod.GET , makeEntity(), Transfer[].class);
+                    restTemplate.exchange(API_BASE_URL + "/requests", HttpMethod.GET , makeEntity(), Transfer[].class);
             myTransfers = response.getBody();
             for (Transfer t :
                     myTransfers) {
@@ -217,25 +217,34 @@ public class TransferService {
         return myTransfers;
     }
 
-    public Transfer prepareSendTransfer(User toUser, User fromUser, BigDecimal amount){
+//    public Transfer prepareSendTransfer(User toUser, User fromUser, BigDecimal amount){
+//        Transfer transfer = new Transfer();
+//        transfer.setToUser(toUser);
+//        transfer.setFromUser(fromUser);
+//        transfer.setAmount(amount);
+//        transfer.setType(2);
+//        transfer.setStatus(2);
+//        return transfer;
+//    }
+    public Transfer prepareTransfer(User toUser, User fromUser, BigDecimal amount, int type, int status){
         Transfer transfer = new Transfer();
         transfer.setToUser(toUser);
         transfer.setFromUser(fromUser);
         transfer.setAmount(amount);
-        transfer.setType(2);
-        transfer.setStatus(2);
+        transfer.setType(type);
+        transfer.setStatus(status);
         return transfer;
     }
 
-    public Transfer prepareRequestTransfer(User toUser, User fromUser, BigDecimal amount){
-        Transfer transfer = new Transfer();
-        transfer.setToUser(toUser);
-        transfer.setFromUser(fromUser);
-        transfer.setAmount(amount);
-        transfer.setType(1);
-        transfer.setStatus(1);
-        return transfer;
-    }
+//    public Transfer prepareRequestTransfer(User toUser, User fromUser, BigDecimal amount){
+//        Transfer transfer = new Transfer();
+//        transfer.setToUser(toUser);
+//        transfer.setFromUser(fromUser);
+//        transfer.setAmount(amount);
+//        transfer.setType(1);
+//        transfer.setStatus(1);
+//        return transfer;
+//    }
 
     public HttpEntity<Void> makeEntity() {
         HttpHeaders headers = new HttpHeaders();

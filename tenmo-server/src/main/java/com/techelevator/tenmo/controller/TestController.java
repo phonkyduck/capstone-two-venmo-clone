@@ -69,7 +69,7 @@ public class TestController {
 
     @PutMapping(path = "/request")
     public boolean request(@RequestBody Transfer transfer){
-        transferDao.addTransfer(transfer);
+        accountDao.requestTE(transfer);
         return true;
     }
 
