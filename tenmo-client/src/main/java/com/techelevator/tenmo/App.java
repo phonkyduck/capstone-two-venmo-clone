@@ -241,12 +241,15 @@ public class App {
             consoleService.printPendingApprovalMenu();
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
-                int requestTransfeId = consoleService.promptForInt("Please enter the request transfer Id: ");
+                int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
 //                selectionService.printArray(transferService.getTransfer(username, 1));
+                //deny, we need to update the transfer_status_id to 3
+                transferService.denyTransfer();
                 continue;
             } else if (menuSelection == 2) {
                 int username = consoleService.promptForInt("Please enter the request transfer Id: ");
 //                selectionService.printArray(transferService.getTransfer(username, 0));
+                //change transfer_status_id to 2, and execute the send
                 continue;
             } else if (menuSelection == 0) {
                 continue;

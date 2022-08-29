@@ -78,4 +78,10 @@ public class TestController {
         return transferDao.viewPendingTransfers(userDao.findByUsername(currentUser.getName()));
     }
 
+    @PutMapping(path = "/deny")
+    public boolean deny(@RequestBody Transfer transfer){
+        transferDao.denyTransfer(transfer);
+        return true;
+    }
+
 }
