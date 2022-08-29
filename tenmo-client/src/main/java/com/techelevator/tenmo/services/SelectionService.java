@@ -29,4 +29,33 @@ public class SelectionService {
         }
     }
 
+    public void printMyPending(Transfer[] requests, User currentUser){
+        for(int i = 0; i < requests.length; i++){
+            if (requests[i].getToUserId() == currentUser.getId()){
+                System.out.println("Pending Request ID " + requests[i].getId() + ": " + requests[i].getToUser().getUsername() + " requested " +
+                        " $" + requests[i].getAmount() + " from " + requests[i].getFromUser().getUsername() + ".");
+            }
+
+        }
+    }
+
+    public void printPendingApproval(Transfer[] requests, User currentUser){
+        for(int i = 0; i < requests.length; i++){
+            if (requests[i].getFromUserId() == currentUser.getId()){
+                System.out.println("Pending Request ID " + requests[i].getId() + ": " + requests[i].getToUser().getUsername() + " requested " +
+                        " $" + requests[i].getAmount() + " from " + requests[i].getFromUser().getUsername() + ".");
+            }
+
+        }
+    }
+
+    public void printAllRequest(Transfer[] requests, User currentUser){
+        for(int i = 0; i < requests.length; i++){
+            if (requests[i].getFromUserId() == currentUser.getId() || requests[i].getToUserId() == currentUser.getId()){
+                System.out.println("Pending Request ID " + requests[i].getId() + ": " + requests[i].getToUser().getUsername() + " requested " +
+                        " $" + requests[i].getAmount() + " from " + requests[i].getFromUser().getUsername() + ".");
+            }
+
+        }
+    }
 }

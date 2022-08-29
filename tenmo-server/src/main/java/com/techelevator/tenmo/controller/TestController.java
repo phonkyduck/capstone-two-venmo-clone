@@ -62,9 +62,20 @@ public class TestController {
     }
 
     @PutMapping(path = "/send")
-    public BigDecimal Send(@RequestBody Transfer transfer){
+    public BigDecimal send(@RequestBody Transfer transfer){
         accountDao.sendTE(transfer);
         return transfer.getAmount();
+    }
+
+    @PutMapping(path = "/request")
+    public boolean request(@RequestBody Transfer transfer){
+        transferDao.addTransfer(transfer);
+        return true;
+    }
+
+    @GetMapping(path = "/requests")
+    public List<Transfer> viewPending(Principal currentUser){
+        return transferDao.viewPendingTransfers(userDao.findByUsername(currentUser.getName()));
     }
 
 }

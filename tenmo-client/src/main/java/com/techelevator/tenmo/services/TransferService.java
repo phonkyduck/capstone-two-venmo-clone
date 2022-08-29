@@ -174,6 +174,49 @@ public class TransferService {
         }
         return error;
     }
+
+    public String requestTE(Transfer transfer){
+        String error = "";
+        int fromUser = Math.toIntExact(transfer.getFromUser().getId());
+        int toUser = Math.toIntExact(transfer.getToUser().getId());
+        BigDecimal amount = transfer.getAmount();
+        try {
+            if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
+                error = "zero";
+            } else if (fromUser != toUser && amount.compareTo(BigDecimal.valueOf(0)) >= 0) {
+                restTemplate.put(API_BASE_URL+"/requests", makeTransferEntity(transfer));
+                error = "success";
+            } else if (fromUser != toUser && amount.compareTo(BigDecimal.valueOf(0)) < 0){
+                error = "amount";
+            } else if (fromUser == toUser){
+                error = "self";
+            } else { error = "unknown";}
+        } catch(RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return error;
+    }
+
+    public Transfer[] getPendingRequest(){
+        Transfer[] myTransfers = new Transfer[]{};
+        try {
+            ResponseEntity<Transfer[]> response =
+                    restTemplate.exchange(API_BASE_URL + "/request", HttpMethod.GET , makeEntity(), Transfer[].class);
+            myTransfers = response.getBody();
+            for (Transfer t :
+                    myTransfers) {
+                t.setUsers();
+            }
+        } catch (RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return myTransfers;
+    }
+
     public Transfer prepareSendTransfer(User toUser, User fromUser, BigDecimal amount){
         Transfer transfer = new Transfer();
         transfer.setToUser(toUser);
@@ -183,6 +226,17 @@ public class TransferService {
         transfer.setStatus(2);
         return transfer;
     }
+
+    public Transfer prepareRequestTransfer(User toUser, User fromUser, BigDecimal amount){
+        Transfer transfer = new Transfer();
+        transfer.setToUser(toUser);
+        transfer.setFromUser(fromUser);
+        transfer.setAmount(amount);
+        transfer.setType(1);
+        transfer.setStatus(1);
+        return transfer;
+    }
+
     public HttpEntity<Void> makeEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(getToken());

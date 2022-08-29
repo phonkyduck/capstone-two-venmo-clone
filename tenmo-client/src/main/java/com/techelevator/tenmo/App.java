@@ -145,7 +145,26 @@ public class App {
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
-		
+        int menuSelection = -1;
+        startUserService();
+        while (menuSelection != 0) {
+            consoleService.printPendingMenu();
+            Transfer[] transfers = transferService.getPendingRequest();
+            menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
+            if (menuSelection == 1) {
+                selectionService.printAllRequest(transfers, currentUser.getUser());
+            } else if (menuSelection == 2) {
+                selectionService.printMyPending(transfers, currentUser.getUser());
+            } else if (menuSelection == 3) {
+                selectionService.printPendingApproval(transfers, currentUser.getUser());
+            } else if (menuSelection == 0) {
+                continue;
+            } else {
+                System.out.println("Invalid Selection");
+                menuSelection = -1;
+            }
+            consoleService.pause();
+        }
 	}
 
 	private void sendBucks() {
@@ -164,7 +183,16 @@ public class App {
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
-		
+        System.out.println("Please select a user to request money from:");
+        selectionService.printArray(userService.getUsers());
+        User requestee;
+        System.out.println("Who are you requesting money from?");
+        String fromUser = consoleService.promptForString("Please enter the username: ");
+        requestee = userService.findUserByString(fromUser);
+        BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to request: ");
+        Transfer transfer = transferService.prepareRequestTransfer(requestee, currentUser.getUser(), amount);
+        String error = transferService.requestTE(transfer);
+        accountService.printSendCheck(error);
 	}
 
 	private void transferSubMenuId() {

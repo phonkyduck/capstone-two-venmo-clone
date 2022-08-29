@@ -251,6 +251,18 @@ public class JdbcTransferDao implements TransferDao{
         jdbcTemplate.update(sql, transfer.getType(), transfer.getStatus(), transfer.getFromAccountId(), transfer.getToAccountId(), transfer.getAmount());
     }
 
+    public List<Transfer> viewPendingTransfers(User currentUser){
+        List<Transfer> transfers = new ArrayList<>();
+        SqlRowSet results = null;
+        String sql = sqlStatement + "WHERE at.user_id = ? OR af.user_id = ? AND t.transfer_type_id = 1;";
+        results = jdbcTemplate.queryForRowSet(sql,currentUser.getId() ,currentUser.getId());
+        while (results.next()){
+            transfers.add(mapRowToTransfer(results));
+        }
+        return transfers;
+
+    }
+
     public Account retreiveAccountId(int id) {
         return accountDao.getAccount(id);
     }

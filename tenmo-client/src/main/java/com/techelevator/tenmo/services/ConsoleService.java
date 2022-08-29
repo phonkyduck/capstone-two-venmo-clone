@@ -21,6 +21,13 @@ public class ConsoleService {
         return menuSelection;
     }
 
+    public void printPendingMenu(){
+        System.out.println("1: View all pending requests.");
+        System.out.println("2: View my pending requests.");
+        System.out.println("3: View requests awaiting my approval.");
+        System.out.println("0: Exit");
+    }
+
     public void printGreeting() {
         System.out.println("*********************");
         System.out.println("* Welcome to TEnmo! *");
