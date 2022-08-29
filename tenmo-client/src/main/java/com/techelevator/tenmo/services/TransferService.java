@@ -45,6 +45,10 @@ public class TransferService {
             ResponseEntity<Transfer[]> response =
             restTemplate.exchange(API_BASE_URL + "/getAll", HttpMethod.GET , makeEntity(), Transfer[].class);
             myTransfers = response.getBody();
+            for (Transfer t :
+                    myTransfers) {
+                t.setUsers();
+            }
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
@@ -134,6 +138,10 @@ public class TransferService {
             ResponseEntity<Transfer[]> response =
             restTemplate.exchange(API_BASE_URL + "?user_id=" + id + "&filter=" + isFrom, HttpMethod.GET, makeEntity(), Transfer[].class);
             myTransfers = response.getBody();
+            for (Transfer t :
+                    myTransfers) {
+                t.setUsers();
+            }
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
         } catch (ResourceAccessException e) {
