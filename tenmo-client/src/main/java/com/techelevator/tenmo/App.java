@@ -246,10 +246,10 @@ public class App {
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
                 String username = consoleService.promptForString("Please enter the username of the recipient: ");
-                selectionService.printArray(transferService.getTransfer(username, 1));
+                selectionService.printArray(transferService.getTransfer(username, 2));
             } else if (menuSelection == 2) {
                 String username = consoleService.promptForString("Please enter the username of the sender: ");
-                selectionService.printArray(transferService.getTransfer(username, 0));
+                selectionService.printArray(transferService.getTransfer(username, 1));
             } else if (menuSelection == 0) {
                 continue;
             } else {

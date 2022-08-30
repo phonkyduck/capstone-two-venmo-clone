@@ -81,11 +81,11 @@ public class JdbcTransferDao implements TransferDao {
     public List<Transfer> findTransfer(String username, User currentUser, int isFrom) {
         SqlRowSet results;
         if (isFrom == 1) {
-            if (username != currentUser.getUsername()) {
-                String sql = sqlStatement + "(WHERE af.user_id = ? AND ut.username = ?) AND t.transfer_type_id = 2;";
+            if (!username.equals(currentUser.getUsername())) {
+                String sql = sqlStatement + "WHERE at.user_id = ? AND uf.username = ? AND t.transfer_type_id = 2;";
                 results = jdbcTemplate.queryForRowSet(sql, currentUser.getId(), username);
             } else {
-                String sql = sqlStatement + "WHERE ut.username = ? AND t.transfer_type_id = 2;";
+                String sql = sqlStatement + "WHERE uf.username = ? AND t.transfer_type_id = 2;";
                 results = jdbcTemplate.queryForRowSet(sql, username);
             }
             List<Transfer> list = new ArrayList<>();
@@ -94,9 +94,9 @@ public class JdbcTransferDao implements TransferDao {
             }
             return list;
         } else {
-            if (username != currentUser.getUsername()) {
-                String sql = sqlStatement + "WHERE (ut.username = ? AND af.user_id = ?) AND t.transfer_type_id = 2;";
-                results = jdbcTemplate.queryForRowSet(sql, currentUser.getId(), username);
+            if (!username.equals(currentUser.getUsername())) {
+                String sql = sqlStatement + "WHERE ut.username = ? AND af.user_id = ? AND t.transfer_type_id = 2;";
+                results = jdbcTemplate.queryForRowSet(sql, username, currentUser.getId());
             } else {
                 String sql = sqlStatement + "WHERE ut.username = ? AND t.transfer_type_id = 2;";
                 results = jdbcTemplate.queryForRowSet(sql, username);
@@ -114,8 +114,8 @@ public class JdbcTransferDao implements TransferDao {
         SqlRowSet results;
         if (isFrom == 1) {
             if (id != currentUser.getId()) {
-                String sql = sqlStatement + "WHERE (af.user_id = ? AND at.user_id = ?) AND t.transfer_type_id = 2;";
-                results = jdbcTemplate.queryForRowSet(sql, currentUser.getId(), id);
+                String sql = sqlStatement + "WHERE af.user_id = ? AND at.user_id = ? AND t.transfer_type_id = 2;";
+                results = jdbcTemplate.queryForRowSet(sql, id, currentUser.getId());
             } else {
                 String sql = sqlStatement + "WHERE af.user_id = ? AND t.transfer_type_id = 2;";
                 results = jdbcTemplate.queryForRowSet(sql, id);

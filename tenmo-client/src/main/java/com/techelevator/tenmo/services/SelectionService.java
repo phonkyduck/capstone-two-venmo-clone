@@ -6,10 +6,8 @@ import com.techelevator.tenmo.model.User;
 public class SelectionService {
 
     public void printArray(User[] users){
-        int count = 1;
         for(int i = 0; i < users.length; i++){
-            System.out.println(count + ": " + users[i].getUsername());
-            count++;
+            System.out.println(users[i].getId() + ": " + users[i].getUsername());
         }
     }
 
