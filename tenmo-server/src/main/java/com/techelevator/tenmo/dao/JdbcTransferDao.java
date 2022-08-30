@@ -227,7 +227,7 @@ public class JdbcTransferDao implements TransferDao{
     @Override
     public Transfer findById(int transferId) {
         Transfer transfer = null;
-        String sql = sqlStatement + "WHERE t.transfer_id = ? AND t.transfer_type_id = 2;";
+        String sql = sqlStatement + "WHERE t.transfer_id = ? "/*AND t.transfer_type_id = 2 */+";";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
         while(results.next()) {
             transfer = mapRowToTransfer(results);

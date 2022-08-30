@@ -217,11 +217,11 @@ public class TransferService {
         return myTransfers;
     }
 
-    public boolean denyTransfer() {
+    public boolean denyTransfer(Transfer transfer) {
         boolean myTransfer = false;
         try{
             ResponseEntity<Boolean> response =
-                    restTemplate.exchange(API_BASE_URL + "/deny", HttpMethod.PUT, makeEntity(), Boolean.class);
+                    restTemplate.exchange(API_BASE_URL + "/deny", HttpMethod.PUT, makeTransferEntity(transfer), Boolean.class);
             myTransfer = response.getBody();
         } catch (RestClientResponseException e) {
             BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());

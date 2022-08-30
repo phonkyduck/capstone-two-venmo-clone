@@ -244,7 +244,7 @@ public class App {
                 int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
 //                selectionService.printArray(transferService.getTransfer(username, 1));
                 //deny, we need to update the transfer_status_id to 3
-                transferService.denyTransfer();
+                System.out.println(transferService.denyTransfer(transferService.getTransferById(requestTransferId)));
                 continue;
             } else if (menuSelection == 2) {
                 int username = consoleService.promptForInt("Please enter the request transfer Id: ");
