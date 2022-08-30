@@ -17,22 +17,12 @@ public class Transfer {
     private int fromUserId;
     private BigDecimal amount;
 
-    public int getToUserId() {
-        return toUserId;
-    }
 
     public void setToUserId(int toUserId) {
         this.toUserId = toUserId;
     }
 
-    public void setFromUserId(int fromUserId) {
-        this.fromUserId = fromUserId;
-    }
-    public int getFromUserId() {
-        return fromUserId;
-    }
-
-
+    public void setFromUserId(int fromUserId) {this.fromUserId = fromUserId;}
 
     public int getToAccountId() {
         return toAccountId;
@@ -74,8 +64,6 @@ public class Transfer {
         this.status = status;
     }
 
-
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -88,28 +76,12 @@ public class Transfer {
         return toUser;
     }
 
-    public void setToUser(User toUser) {
-        this.toUser = toUser;
-    }
-
     public User getFromUser() {
         return fromUser;
     }
 
-    public void setFromUser(User fromUser) {
-        this.fromUser = fromUser;
-    }
-
-    public String getToUserName() {
-        return toUserName;
-    }
-
     public void setToUserName(String toUserName) {
         this.toUserName = toUserName;
-    }
-
-    public String getFromUserName() {
-        return fromUserName;
     }
 
     public void setFromUserName(String fromUserName) {

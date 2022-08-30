@@ -1,11 +1,7 @@
 package com.techelevator.tenmo.services;
 
-import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
-import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -25,8 +21,8 @@ public class AccountService {
         return user;
     }
 
-    private String token;
-    private User user;
+    private final String token;
+    private final User user;
 
     public AccountService(String token, User user) {
         this.token = token;

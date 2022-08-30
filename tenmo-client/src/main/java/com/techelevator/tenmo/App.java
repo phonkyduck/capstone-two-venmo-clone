@@ -23,7 +23,7 @@ public class App {
     private final User user = new User();
 
     public void startTransferService(){
-        this.transferService = new TransferService(currentUser.getToken(), currentUser.getUser(),accountService);
+        this.transferService = new TransferService(currentUser.getToken(),accountService);
     }
 
     public void startAccountService(){

@@ -2,21 +2,16 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
-import org.apiguardian.api.API;
 import org.springframework.http.*;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserService {
 
     public static final String API_BASE_URL = "http://localhost:8080/user";
     private final RestTemplate restTemplate = new RestTemplate();
-    private String token;
+    private final String token;
 
     public User getUser() {
         return user;
