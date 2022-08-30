@@ -15,7 +15,7 @@ public class SelectionService {
 
     public void printArray(Transfer[] transfers){
         for(int i = 0; i < transfers.length; i++){
-            System.out.println("Transfer ID: " + transfers[i].getId() + " " + transfers[i].getFromUser().getUsername() + " sent " +
+            System.out.println("Transfer ID " + transfers[i].getId() + ": " + transfers[i].getFromUser().getUsername() + " sent " +
                     transfers[i].getToUser().getUsername() + " $" + transfers[i].getAmount() + ".");
         }
     }
@@ -24,7 +24,7 @@ public class SelectionService {
         if (transfers == null){
             System.out.println("No transfer found.");
         } else {
-            System.out.println("Transfer ID: " + transfers.getId() + " " + transfers.getFromUser().getUsername() + " sent " +
+            System.out.println("Transfer ID " + transfers.getId() + ": " + transfers.getFromUser().getUsername() + " sent " +
                     transfers.getToUser().getUsername() + " $" + transfers.getAmount() + ".");
         }
     }
@@ -56,6 +56,29 @@ public class SelectionService {
                         " $" + requests[i].getAmount() + " from " + requests[i].getFromUser().getUsername() + ".");
             }
 
+        }
+    }
+    public void printTransferDetails(Transfer transfers){
+        if (transfers == null){
+            System.out.println("No transfer found.");
+        } else {
+            System.out.println("Transfer ID: " + transfers.getId());
+            System.out.println("Sender: " + transfers.getFromUser().getUsername());
+            System.out.println("Recipient: " + transfers.getToUser().getUsername());
+            if(transfers.getType() == 1){
+                System.out.println("Type: Request");
+            } else if(transfers.getType() == 2){
+                System.out.println("Type: Send");
+            }
+            System.out.println("Amount: " + transfers.getAmount());
+            System.out.print("Transfer Status: ");
+            if(transfers.getStatus() == 1){
+                System.out.print("Pending");
+            } else if(transfers.getStatus() == 2){
+                System.out.print("Approved");
+            } else if(transfers.getStatus() == 3){
+                System.out.print("Rejected");
+            }
         }
     }
 }

@@ -282,7 +282,7 @@ public class App {
 
     private void findTransferByID() {
         int transferId = consoleService.promptForInt("Please enter the Transfer ID: ");
-        selectionService.printTransfer(transferService.getTransferById(transferId));
+        selectionService.printTransferDetails(transferService.getTransferById(transferId));
     }
 
 }

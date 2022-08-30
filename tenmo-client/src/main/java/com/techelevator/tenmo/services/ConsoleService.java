@@ -59,7 +59,7 @@ public class ConsoleService {
         System.out.println();
         System.out.println("1: View all transfers");
         System.out.println("2: Search transfer by User ID");
-        System.out.println("3: Search transfer by username");
+        System.out.println("3: Search transfer by Username");
         System.out.println("4: Search transfer by Transfer ID");
         System.out.println("5: Display all users");
         System.out.println("0. Exit");

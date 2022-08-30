@@ -106,10 +106,8 @@ public class AccountService {
             System.out.println("Cannot send zero or negative amount");
         } else if(error.equals("success")){
             System.out.println("Request was successful");
-        } else if(error.equals("amount")){
-            System.out.println("Cannot Complete Transaction: Insufficient Funds");
         } else if(error.equals("self")){
-            System.out.println("Cannot Complete Transaction: Cannot Send TEbucks to Self");
+            System.out.println("Cannot Complete Request: Sender and Recipient cannot be same User");
         } else {
             System.out.println("An unknown error has occurred");
         }
