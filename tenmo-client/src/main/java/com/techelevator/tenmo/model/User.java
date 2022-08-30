@@ -5,6 +5,8 @@ public class User {
     private Long id;
     private String username;
 
+    //Getters & Setters
+
     public Long getId() {
         return id;
     }
@@ -20,6 +22,8 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    //methods
 
     @Override
     public boolean equals(Object other) {

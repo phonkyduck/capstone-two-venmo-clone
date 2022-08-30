@@ -12,22 +12,22 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 
 public class TransferService {
+
+    //Variables
+
     public static final String API_BASE_URL = "http://localhost:8080/user/transfer";
     private final RestTemplate restTemplate = new RestTemplate();
-    private final AuthenticatedUser authenticatedUser = new AuthenticatedUser();
-    private final String token;
+    private AuthenticatedUser currentUser;
+    private AccountService accountService;
 
+    //Constructor
 
-    public String getToken() {
-        return token;
-    }
-
-    public TransferService(String token, AccountService accountService) {
-        this.token = token;
+    public TransferService(AuthenticatedUser currentUser, AccountService accountService) {
+        this.currentUser = currentUser;
         this.accountService = accountService;
     }
-    private final AccountService accountService;
 
+    //Methods
 
     public Transfer[] getAllTransfers() {
         Transfer[] myTransfers = new Transfer[]{};
@@ -205,13 +205,14 @@ public class TransferService {
 
     public HttpEntity<Void> makeEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(getToken());
+        headers.setBearerAuth(currentUser.getToken());
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new HttpEntity<>(headers);
     }
+
     public HttpEntity<Transfer> makeTransferEntity(Transfer transfer){
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(getToken());
+        headers.setBearerAuth(currentUser.getToken());
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new HttpEntity<>(transfer , headers);
     }

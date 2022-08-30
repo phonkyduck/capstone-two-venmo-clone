@@ -12,8 +12,10 @@ import java.util.Scanner;
 
 public class ConsoleService {
 
+    //Variables
     private final Scanner scanner = new Scanner(System.in);
 
+    //Menu Printing Methods
     public int promptForMenuSelection(String prompt) {
         int menuSelection;
         System.out.print(prompt);
@@ -86,6 +88,9 @@ public class ConsoleService {
         System.out.println();
     }
 
+
+    //Prompt for User Input Methods
+
     public UserCredentials promptForCredentials() {
         String username = promptForString("Username: ");
         String password = promptForString("Password: ");
@@ -118,6 +123,9 @@ public class ConsoleService {
             }
         }
     }
+
+    //Other Methods
+
     public boolean havePending(Transfer[] transfers, User user) {
         List<Transfer> pendingCheck = new ArrayList<>();
         for (Transfer t :

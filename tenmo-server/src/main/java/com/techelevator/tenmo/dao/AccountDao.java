@@ -10,8 +10,8 @@ public interface AccountDao {
     Account getAccount(int id);
 
     BigDecimal addTE(BigDecimal amount, int id);
-    BigDecimal sendTE(Transfer transfer);
-    void requestTE(Transfer transfer);
-    //BigDecimal requestTE();
 
+    BigDecimal sendTE(Transfer transfer);
+
+    void requestTE(Transfer transfer);
 }

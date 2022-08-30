@@ -17,29 +17,6 @@ public class Transfer {
     private int fromUserId;
     private BigDecimal amount;
 
-
-    public void setToUserId(int toUserId) {
-        this.toUserId = toUserId;
-    }
-
-    public void setFromUserId(int fromUserId) {this.fromUserId = fromUserId;}
-
-    public int getToAccountId() {
-        return toAccountId;
-    }
-
-    public void setToAccountId(int toAccountId) {
-        this.toAccountId = toAccountId;
-    }
-
-    public int getFromAccountId() {
-        return fromAccountId;
-    }
-
-    public void setFromAccountId(int fromAccountId) {
-        this.fromAccountId = fromAccountId;
-    }
-
     public int getId() {
         return id;
     }
@@ -64,6 +41,70 @@ public class Transfer {
         this.status = status;
     }
 
+    public int getToAccountId() {
+        return toAccountId;
+    }
+
+    public void setToAccountId(int toAccountId) {
+        this.toAccountId = toAccountId;
+    }
+
+    public User getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
+    }
+
+    public String getToUserName() {
+        return toUserName;
+    }
+
+    public void setToUserName(String toUserName) {
+        this.toUserName = toUserName;
+    }
+
+    public int getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(int toUserId) {
+        this.toUserId = toUserId;
+    }
+
+    public int getFromAccountId() {
+        return fromAccountId;
+    }
+
+    public void setFromAccountId(int fromAccountId) {
+        this.fromAccountId = fromAccountId;
+    }
+
+    public User getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public String getFromUserName() {
+        return fromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
+    }
+
+    public int getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(int fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -72,19 +113,7 @@ public class Transfer {
         this.amount = amount;
     }
 
-    public User getToUser() {
-        return toUser;
-    }
 
-    public User getFromUser() {
-        return fromUser;
-    }
 
-    public void setToUserName(String toUserName) {
-        this.toUserName = toUserName;
-    }
 
-    public void setFromUserName(String fromUserName) {
-        this.fromUserName = fromUserName;
-    }
 }

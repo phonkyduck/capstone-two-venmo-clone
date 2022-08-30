@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
@@ -8,25 +9,17 @@ import java.math.BigDecimal;
 
 public class AccountService {
 
-    private BigDecimal accountBalance;
+    //Variables
 
+    private BigDecimal accountBalance;
     public static final  String API_BASE_URL = "http://localhost:8080/user/account";
     private final RestTemplate restTemplate = new RestTemplate();
+    private AuthenticatedUser currentUser;
 
-    public String getToken() {
-        return token;
-    }
+    //Methods
 
-    public User getUser() {
-        return user;
-    }
-
-    private final String token;
-    private final User user;
-
-    public AccountService(String token, User user) {
-        this.token = token;
-        this.user = user;
+    public AccountService(AuthenticatedUser currentUser) {
+        this.currentUser = currentUser;
     }
 
     public BigDecimal getBalance(){
@@ -36,34 +29,9 @@ public class AccountService {
         return accountBalance;
     }
 
-//    public String sendTE(Transfer transfer){
-//        getBalance();
-//        String error = "";
-//        int fromUser = Math.toIntExact(transfer.getFromUser().getId());
-//        int toUser = Math.toIntExact(transfer.getToUser().getId());
-//        BigDecimal amount = transfer.getAmount();
-//        try {
-//            if (amount.compareTo(BigDecimal.valueOf(0)) <= 0){
-//                error = "zero";
-//            } else if (fromUser != toUser && accountBalance.compareTo(amount) >= 0) {
-//                restTemplate.put(API_BASE_URL, makeEntity());
-//                error = "success";
-//            } else if (fromUser != toUser && accountBalance.compareTo(amount) < 0){
-//                error = "amount";
-//            } else if (fromUser == toUser && accountBalance.compareTo(amount) >= 0){
-//                error = "self";
-//            } else { error = "unknown";}
-//        } catch(RestClientResponseException e) {
-//            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
-//        } catch (ResourceAccessException e) {
-//            BasicLogger.log(e.getMessage());
-//        }
-//        return error;
-//    }
-
     private HttpEntity<User> makeEntity() {
-        User user = getUser();
-        String token = getToken();
+        User user = currentUser.getUser();
+        String token = currentUser.getToken();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -73,11 +41,7 @@ public class AccountService {
     public void printCurrentBalance(){
         String balance = String.valueOf(getBalance());
         String stars ="*********************************";
-//        System.out.println();
-//        System.out.printf("%s %31s %n","*","*");
         System.out.printf("%s %n%s %31s %n* %s %11s * %n%s %31s %n%s",stars,"*","*","Your balance is: ", balance,"*","*",stars);
-//        System.out.printf("%s %31s %n","*","*");
-//        System.out.println("*********************************");
     }
 
     public void printUserList(){

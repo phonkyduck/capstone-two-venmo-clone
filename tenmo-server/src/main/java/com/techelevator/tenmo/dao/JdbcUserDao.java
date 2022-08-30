@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/** DAO methods related to user changes & requests */
+
 @Component
 public class JdbcUserDao implements UserDao {
 
@@ -20,8 +22,6 @@ public class JdbcUserDao implements UserDao {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
-
 
     @Override
     public int findIdByUsername(String username) {

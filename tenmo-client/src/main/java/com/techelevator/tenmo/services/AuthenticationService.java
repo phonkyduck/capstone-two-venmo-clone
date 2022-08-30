@@ -15,8 +15,12 @@ import com.techelevator.tenmo.model.UserCredentials;
 
 public class AuthenticationService {
 
+    //Variables
+
     private final String baseUrl;
     private final RestTemplate restTemplate = new RestTemplate();
+
+    //Methods
 
     public AuthenticationService(String url) {
         this.baseUrl = url;

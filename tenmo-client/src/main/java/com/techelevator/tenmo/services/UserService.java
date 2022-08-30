@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
@@ -9,28 +10,23 @@ import org.springframework.web.client.RestTemplate;
 
 public class UserService {
 
+    //Variables
+
     public static final String API_BASE_URL = "http://localhost:8080/user";
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String token;
+    private AuthenticatedUser currentUser;
 
-    public User getUser() {
-        return user;
+    //Constructor
+
+    public UserService(AuthenticatedUser currentUser){
+        this.currentUser = currentUser;
     }
 
-    private User user = new User();
-
-    public String getToken() {
-        return token;
-    }
-
-    public UserService(String token, User user){
-        this.token = token;
-        this.user = user;
-    }
+    //Methods
 
     private HttpEntity<User> makeEntity() {
-        User user = getUser();
-        String token = getToken();
+        User user = currentUser.getUser();
+        String token = currentUser.getToken();
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
         headers.setContentType(MediaType.APPLICATION_JSON);

@@ -7,6 +7,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+/** Controller to manage users */
+
 @PreAuthorize("isAuthenticated()")
 @RestController
 @RequestMapping(path = "/user")
@@ -18,16 +21,6 @@ public class UserController {
     public List<User> getAll(){
         return userDao.findAll();
     }
-
-//    @GetMapping(path = "/id-for-{username}")
-//    public int getId(@PathVariable String username){
-//        return userDao.findIdByUsername(username);
-//    }
-//
-//    @GetMapping(path = "/find_user-{username}")
-//    public User findUser(@PathVariable String username){
-//        return userDao.findByUsername(username);
-//    }
 
     @PostMapping
     public boolean createUser(@RequestBody String username, @RequestBody String password){

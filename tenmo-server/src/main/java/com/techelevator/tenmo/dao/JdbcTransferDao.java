@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/** DAO methods related to TEbucks transfers between users & transfer information requests */
+
 @Component
 public class JdbcTransferDao implements TransferDao {
 
@@ -40,7 +42,6 @@ public class JdbcTransferDao implements TransferDao {
         }
         return list;
     }
-
 
     public List<Transfer> findTransfer(String username, User currentUser) {
         SqlRowSet results;
@@ -143,7 +144,7 @@ public class JdbcTransferDao implements TransferDao {
     @Override
     public Transfer findById(int transferId, User currentUser) {
         Transfer transfer = null;
-        String sql = sqlStatement + "(WHERE t.transfer_id = ? AND at.user_id = ?) AND t.transfer_type_id = 2;";
+        String sql = sqlStatement + "WHERE t.transfer_id = ? AND at.user_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId, currentUser);
         while (results.next()) {
             transfer = mapRowToTransfer(results);
@@ -154,7 +155,7 @@ public class JdbcTransferDao implements TransferDao {
     @Override
     public Transfer findById(int transferId) {
         Transfer transfer = null;
-        String sql = sqlStatement + "WHERE t.transfer_id = ? "/*AND t.transfer_type_id = 2 */ + ";";
+        String sql = sqlStatement + "WHERE t.transfer_id = ? " + ";";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferId);
         while (results.next()) {
             transfer = mapRowToTransfer(results);

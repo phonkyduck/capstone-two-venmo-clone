@@ -9,11 +9,16 @@ import io.cucumber.java.bs.I;
 
 import java.math.BigDecimal;
 
+    /** TEnmo is an app that allows authenticated users to send each other money.
+    *       Nothing says friendship like sending TEbucks to your pal!         */
+
+
 public class App {
+
+    //Variables
 
     private static final String API_BASE_URL = "http://localhost:8080/";
     private AuthenticatedUser currentUser;
-
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private AccountService accountService;
@@ -22,16 +27,17 @@ public class App {
     private final SelectionService selectionService = new SelectionService();
     private final User user = new User();
 
+    //Constructors
     public void startTransferService(){
-        this.transferService = new TransferService(currentUser.getToken(),accountService);
+        this.transferService = new TransferService(currentUser, accountService);
     }
 
     public void startAccountService(){
-        this.accountService = new AccountService(currentUser.getToken(), currentUser.getUser());
+        this.accountService = new AccountService(currentUser);
     }
 
     public void startUserService(){
-        this.userService = new UserService(currentUser.getToken(), currentUser.getUser());
+        this.userService = new UserService(currentUser);
     }
     public void startServices(){
         startUserService();
@@ -39,6 +45,7 @@ public class App {
         startTransferService();
     }
 
+    //Methods
 
     public static void main(String[] args) {
         App app = new App();
@@ -125,7 +132,6 @@ public class App {
 		    consoleService.printTransferMenu();
 		    menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
 		    if (menuSelection == 1) {
-
                 selectionService.printArray(transferService.getAllTransfers());
             } else if (menuSelection == 2) {
 		        transferSubMenuId();
@@ -210,14 +216,8 @@ public class App {
             }finally {
                 continue;
             }
-
-
-            }
         }
-
-
-
-
+    }
 
 	private void transferSubMenuId() {
         int menuSelection = -1;
@@ -272,12 +272,8 @@ public class App {
                         System.out.println("Transfer is Does not Exist or is Invalid  ");
                         continue;
                     }
-
-
                 continue;
             } else if (menuSelection == 2) {
-
-                //change transfer_status_id to 2, and execute the send
                 boolean error = false;
                     try {
                         int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
@@ -287,7 +283,6 @@ public class App {
                         System.out.println("Transfer is Does not Exist or is Invalid  ");
                         continue;
                     }
-
                 if (error) {
                     viewCurrentBalance();
                 }

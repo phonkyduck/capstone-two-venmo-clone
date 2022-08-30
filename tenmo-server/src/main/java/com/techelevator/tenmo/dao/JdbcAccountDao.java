@@ -1,16 +1,16 @@
 package com.techelevator.tenmo.dao;
 
-
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+/** DAO methods related to account changes & requests */
 
 @Component
 public class JdbcAccountDao implements AccountDao {
@@ -20,7 +20,6 @@ public class JdbcAccountDao implements AccountDao {
 
     @Autowired
     private JdbcTransferDao transferDao;
-
 
     @Override
     public Account getAccount(int id) {
@@ -80,7 +79,6 @@ public class JdbcAccountDao implements AccountDao {
         transferDao.addTransfer(transfer);
     }
 
-
     public BigDecimal approveRequest(Transfer transfer) {
         String sql = "SELECT balance FROM account WHERE user_id = ?;";
         BigDecimal toUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getToUser().getId());
@@ -94,7 +92,6 @@ public class JdbcAccountDao implements AccountDao {
         jdbcTemplate.update(sqlUpdate, toUser.add(transfer.getAmount()), transfer.getToUser().getId(), fromUser.subtract(transfer.getAmount()), transfer.getFromUser().getId());
         return fromUser;
     }
-
 
     private Account mapRowToUser(SqlRowSet rs) {
         Account user = new Account();

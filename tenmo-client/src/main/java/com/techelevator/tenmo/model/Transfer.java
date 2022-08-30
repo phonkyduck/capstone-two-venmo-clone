@@ -16,6 +16,9 @@ public class Transfer {
     private String fromUserName;
     private BigDecimal amount;
 
+
+    // Getters & Setters
+
     public int getId() {
         return id;
     }
