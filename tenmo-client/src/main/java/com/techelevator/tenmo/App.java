@@ -5,6 +5,7 @@ import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.*;
+import io.cucumber.java.bs.I;
 
 import java.math.BigDecimal;
 
@@ -187,14 +188,31 @@ public class App {
         System.out.println("Please select a user to request money from:");
         selectionService.printArray(userService.getUsers());
         User requestee;
-        System.out.println("Who are you requesting money from?");
-        String fromUser = consoleService.promptForString("Please enter the username: ");
-        requestee = userService.findUserByString(fromUser);
-        BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to request: ");
-        Transfer transfer = transferService.prepareTransfer(currentUser.getUser(), requestee, amount, 1, 1);
-        String error = transferService.requestTE(transfer);
-        accountService.printSendCheck(error);
-	}
+        String fromUser = "";
+        boolean isString = true;
+        while (isString) {
+            System.out.println("Who are you requesting money from?");
+            fromUser = consoleService.promptForString("Please enter the username: ");
+            try {
+                requestee = userService.findUserByString(fromUser);
+                BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to request: ");
+                Transfer transfer = transferService.prepareTransfer(currentUser.getUser(), requestee, amount, 1, 1);
+                String error = transferService.requestTE(transfer);
+                accountService.printRequestCheck(error);
+                isString = false;
+            }catch (Exception e){
+                System.out.println("Invalid Username");
+            }finally {
+                continue;
+            }
+
+
+            }
+        }
+
+
+
+
 
 	private void transferSubMenuId() {
         int menuSelection = -1;

@@ -75,12 +75,13 @@ public class AccountService {
     }
 
     public void printCurrentBalance(){
-        System.out.println();
-        System.out.println("*********************************");
-        System.out.println("*                         *");
-        System.out.println("* Your new balance is: " + getBalance() + " *");
-        System.out.println("*                         *");
-        System.out.println("*********************************");
+        String balance = String.valueOf(getBalance());
+        String stars ="*********************************";
+//        System.out.println();
+//        System.out.printf("%s %31s %n","*","*");
+        System.out.printf("%s %n%s %31s %n* %s %11s * %n%s %31s %n%s",stars,"*","*","Your balance is: ", balance,"*","*",stars);
+//        System.out.printf("%s %31s %n","*","*");
+//        System.out.println("*********************************");
     }
 
     public void printUserList(){
@@ -92,6 +93,19 @@ public class AccountService {
             System.out.println("Cannot send zero or negative amount");
         } else if(error.equals("success")){
             System.out.println("Send was successful");
+        } else if(error.equals("amount")){
+            System.out.println("Cannot Complete Transaction: Insufficient Funds");
+        } else if(error.equals("self")){
+            System.out.println("Cannot Complete Transaction: Cannot Send TEbucks to Self");
+        } else {
+            System.out.println("An unknown error has occurred");
+        }
+    }
+    public void printRequestCheck(String error){
+        if(error.equals("zero")) {
+            System.out.println("Cannot send zero or negative amount");
+        } else if(error.equals("success")){
+            System.out.println("Request was successful");
         } else if(error.equals("amount")){
             System.out.println("Cannot Complete Transaction: Insufficient Funds");
         } else if(error.equals("self")){
