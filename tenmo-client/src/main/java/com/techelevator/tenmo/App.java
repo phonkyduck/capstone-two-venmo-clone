@@ -157,8 +157,13 @@ public class App {
             } else if (menuSelection == 2) {
                 selectionService.printMyPending(transfers, currentUser.getUser());
             } else if (menuSelection == 3) {
-                selectionService.printPendingApproval(transfers, currentUser.getUser());
-                pendingApprovalSubMenu();
+                if (consoleService.havePending(transfers, currentUser.getUser())) {
+                    selectionService.printPendingApproval(transfers, currentUser.getUser());
+                    pendingApprovalSubMenu();
+                } else {
+                    System.out.println("No Pending Request");
+                    continue;
+                }
             } else if (menuSelection == 0) {
                 continue;
             } else {
@@ -259,18 +264,33 @@ public class App {
             consoleService.printPendingApprovalMenu();
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
-                int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
-                //deny, we need to update the transfer_status_id to 3
-                System.out.println(transferService.denyTransfer(transferService.getTransferById(requestTransferId)));
+
+                    int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
+                    try {
+                        System.out.println(transferService.denyTransfer(transferService.getTransferById(requestTransferId)));
+                    } catch (Exception e){
+                        System.out.println("Transfer is Does not Exist or is Invalid  ");
+                        continue;
+                    }
+
+
                 continue;
             } else if (menuSelection == 2) {
-                int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
+
                 //change transfer_status_id to 2, and execute the send
-                boolean error = transferService.approveTransfer(transferService.getTransferById(requestTransferId));
-                if (error){
+                boolean error = false;
+                    try {
+                        int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
+                         error = transferService.approveTransfer(transferService.getTransferById(requestTransferId));
+
+                    } catch (Exception e) {
+                        System.out.println("Transfer is Does not Exist or is Invalid  ");
+                        continue;
+                    }
+
+                if (error) {
                     viewCurrentBalance();
                 }
-
                 continue;
             } else if (menuSelection == 0) {
                 continue;

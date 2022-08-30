@@ -1,9 +1,13 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -112,6 +116,20 @@ public class ConsoleService {
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a decimal number.");
             }
+        }
+    }
+    public boolean havePending(Transfer[] transfers, User user) {
+        List<Transfer> pendingCheck = new ArrayList<>();
+        for (Transfer t :
+                transfers) {
+            if (t.getFromUserId() == user.getId()) {
+                pendingCheck.add(t);
+            }
+        }
+        if (pendingCheck.size()>0){
+            return true;
+        } else {
+            return false;
         }
     }
 
