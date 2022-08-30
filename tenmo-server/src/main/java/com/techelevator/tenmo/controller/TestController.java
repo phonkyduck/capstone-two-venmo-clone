@@ -80,7 +80,14 @@ public class TestController {
 
     @PutMapping(path = "/deny")
     public boolean deny(@RequestBody Transfer transfer){
-        transferDao.denyTransfer(transfer);
+        transferDao.updateTransfer(3, transfer);
+        return true;
+    }
+
+    @PutMapping(path = "/approve")
+    public boolean approve(@RequestBody Transfer transfer){
+        accountDao.approveRequest(transfer);
+        transferDao.updateTransfer(2, transfer);
         return true;
     }
 

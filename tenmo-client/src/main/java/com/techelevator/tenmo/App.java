@@ -242,14 +242,17 @@ public class App {
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
                 int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
-//                selectionService.printArray(transferService.getTransfer(username, 1));
                 //deny, we need to update the transfer_status_id to 3
                 System.out.println(transferService.denyTransfer(transferService.getTransferById(requestTransferId)));
                 continue;
             } else if (menuSelection == 2) {
-                int username = consoleService.promptForInt("Please enter the request transfer Id: ");
-//                selectionService.printArray(transferService.getTransfer(username, 0));
+                int requestTransferId = consoleService.promptForInt("Please enter the request transfer Id: ");
                 //change transfer_status_id to 2, and execute the send
+                boolean error = transferService.approveTransfer(transferService.getTransferById(requestTransferId));
+                if (error){
+                    viewCurrentBalance();
+                }
+
                 continue;
             } else if (menuSelection == 0) {
                 continue;

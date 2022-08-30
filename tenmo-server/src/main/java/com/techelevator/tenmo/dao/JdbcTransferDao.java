@@ -251,9 +251,9 @@ public class JdbcTransferDao implements TransferDao{
         jdbcTemplate.update(sql, transfer.getType(), transfer.getStatus(), transfer.getFromAccountId(), transfer.getToAccountId(), transfer.getAmount());
     }
 
-    public void denyTransfer(Transfer transfer) {
-        String sql = "UPDATE transfer SET transfer_status_id = 3 WHERE transfer_id = ?;";
-        jdbcTemplate.update(sql, transfer.getId());
+    public void updateTransfer(int statusId,Transfer transfer) {
+        String sql = "UPDATE transfer SET transfer_status_id = ? WHERE transfer_id = ?;";
+        jdbcTemplate.update(sql, statusId, transfer.getId());
     }
 
     public List<Transfer> viewPendingTransfers(User currentUser){

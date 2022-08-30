@@ -79,6 +79,29 @@ public class JdbcAccountDao implements AccountDao {
         transfer.setFromAccountId(accountFromId);
         transferDao.addTransfer(transfer);
 
+//        String sql = "SELECT balance FROM account WHERE user_id = ?;";
+//        BigDecimal toUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getToUser().getId());
+//        BigDecimal fromUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getFromUser().getId());
+//        String sqlUpdate = "BEGIN TRANSACTION; "
+//                + "UPDATE account SET balance = ? " +
+//                "WHERE user_id = ?; " +
+//                "UPDATE account SET balance = ? " +
+//                "WHERE user_id = ?; " +
+//                "COMMIT;";
+
+//        List<Object> transactionData = new ArrayList<>();
+//        transactionData.add(sqlUpdate);
+//        transactionData.add(transfer.getToUser().getId());
+//        transactionData.add(transfer.getToUser().getId());
+//        transactionData.add(fromUser.subtract(transfer.getAmount()));
+//        transactionData.add(transfer.getFromUser().getId());
+
+//
+//        jdbcTemplate.update(sqlUpdate, toUser.add(transfer.getAmount()), transfer.getToUser().getId(), fromUser.subtract(transfer.getAmount()), transfer.getFromUser().getId());
+    }
+
+
+    public BigDecimal approveRequest(Transfer transfer){
         String sql = "SELECT balance FROM account WHERE user_id = ?;";
         BigDecimal toUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getToUser().getId());
         BigDecimal fromUser = jdbcTemplate.queryForObject(sql, BigDecimal.class, transfer.getFromUser().getId());
@@ -88,16 +111,8 @@ public class JdbcAccountDao implements AccountDao {
                 "UPDATE account SET balance = ? " +
                 "WHERE user_id = ?; " +
                 "COMMIT;";
-
-        List<Object> transactionData = new ArrayList<>();
-        transactionData.add(sqlUpdate);
-        transactionData.add(transfer.getToUser().getId());
-        transactionData.add(transfer.getToUser().getId());
-        transactionData.add(fromUser.subtract(transfer.getAmount()));
-        transactionData.add(transfer.getFromUser().getId());
-
-//
-//        jdbcTemplate.update(sqlUpdate, toUser.add(transfer.getAmount()), transfer.getToUser().getId(), fromUser.subtract(transfer.getAmount()), transfer.getFromUser().getId());
+        jdbcTemplate.update(sqlUpdate, toUser.add(transfer.getAmount()), transfer.getToUser().getId(), fromUser.subtract(transfer.getAmount()), transfer.getFromUser().getId());
+        return fromUser;
     }
 
 

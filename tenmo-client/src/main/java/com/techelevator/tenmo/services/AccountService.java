@@ -75,7 +75,12 @@ public class AccountService {
     }
 
     public void printCurrentBalance(){
-        System.out.println(getBalance());
+        System.out.println();
+        System.out.println("*********************************");
+        System.out.println("*                         *");
+        System.out.println("* Your new balance is: " + getBalance() + " *");
+        System.out.println("*                         *");
+        System.out.println("*********************************");
     }
 
     public void printUserList(){

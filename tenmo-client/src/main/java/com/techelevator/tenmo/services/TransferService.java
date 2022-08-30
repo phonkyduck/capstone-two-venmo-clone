@@ -231,6 +231,20 @@ public class TransferService {
         return myTransfer;
     }
 
+    public boolean approveTransfer(Transfer transfer){
+        boolean myTransfer = false;
+        try{
+            ResponseEntity<Boolean> response =
+                    restTemplate.exchange(API_BASE_URL + "/approve", HttpMethod.PUT, makeTransferEntity(transfer), Boolean.class);
+            myTransfer = response.getBody();
+        } catch (RestClientResponseException e) {
+            BasicLogger.log(e.getRawStatusCode() + " : " + e.getStatusText());
+        } catch (ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return myTransfer;
+    }
+
 //    public Transfer prepareSendTransfer(User toUser, User fromUser, BigDecimal amount){
 //        Transfer transfer = new Transfer();
 //        transfer.setToUser(toUser);
