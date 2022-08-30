@@ -37,9 +37,9 @@ public class TransferController {
             return transferDao.findTransfer(username, userDao.findByUsername(user.getName()));
         } else if (username.isEmpty() && isFrom == 0) {
             return transferDao.findTransfer(id,userDao.findByUsername(user.getName()));
-        } else if (!username.isEmpty() && isFrom == 1 || !username.isEmpty() && isFrom == -1) {
+        } else if (!username.isEmpty() && isFrom == 1 || !username.isEmpty() && isFrom == 2) {
             return transferDao.findTransfer(username, userDao.findByUsername(user.getName()), isFrom);
-        } else if (username.isEmpty() && isFrom == 1 || username.isEmpty() && isFrom ==-1) {
+        } else if (username.isEmpty() && isFrom == 1 || username.isEmpty() && isFrom == 2) {
             return transferDao.findTransfer(id,userDao.findByUsername(user.getName()),isFrom);
         } else {
             return null;
