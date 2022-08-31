@@ -186,11 +186,18 @@ public class App {
         selectionService.printArray(userService.getUsers());
         User recipient;
         String toUser = consoleService.promptForString("Please enter the recipient's username: ");
-        recipient = userService.findUserByString(toUser);
-        BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to send: ");
-        Transfer transfer = transferService.prepareTransfer(recipient, currentUser.getUser(), amount, 2, 2);
-        String error = transferService.sendTE(transfer);
-        accountService.printSendCheck(error);
+
+        try{
+            recipient = userService.findUserByString(toUser);
+            BigDecimal amount = consoleService.promptForBigDecimal("Please enter the amount you'd like to send: ");
+            Transfer transfer = transferService.prepareTransfer(recipient, currentUser.getUser(), amount, 2, 2);
+            String error = transferService.sendTE(transfer);
+            accountService.printSendCheck(error);
+        }catch (Exception e){
+            System.out.println("Not Valid Username");
+
+        }
+
 
 	}
 
